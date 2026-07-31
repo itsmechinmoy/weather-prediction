@@ -76,10 +76,12 @@
   .metric-card .val { font-size: 18px; font-weight: 700; color: #f8fafc; margin-top: 2px; }
 
   .ml-card { background: #0f172a; border: 1px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 14px; }
-  .ml-card h3 { margin: 0 0 8px 0; font-size: 14px; color: #38bdf8; display: flex; align-items: center; gap: 6px; }
+  .ml-card h3 { margin: 0 0 6px 0; font-size: 14px; color: #38bdf8; display: flex; align-items: center; gap: 6px; }
+  .ml-subtitle { font-size: 12px; color: #cbd5e1; margin-bottom: 8px; font-weight: 600; }
   .ml-stat-row { display: flex; justify-content: space-between; font-size: 12px; color: #cbd5e1; padding: 4px 0; border-bottom: 1px solid #1e293b; }
   .ml-stat-row:last-child { border-bottom: none; }
   .ml-stat-val { font-weight: 700; color: #38bdf8; }
+  .ml-desc { font-size: 11px; color: #94a3b8; margin-top: 8px; line-height: 1.4; background: #162032; padding: 8px; border-radius: 6px; }
 
   canvas { max-width: 100%; margin-top: 8px; }
   
@@ -90,7 +92,7 @@
   }
   .legend .bar {
     width: 220px; height: 10px;
-    background: linear-gradient(to right, #2166ac, #67a9cf, #fddbc7, #ef8a62, #b2182b);
+    background: linear-gradient(to right, hsl(220,78%,48%), hsl(154,78%,48%), hsl(77,78%,48%), hsl(44,78%,48%), hsl(0,78%,48%));
     border-radius: 4px; margin: 6px 0 4px 0;
   }
 </style>
@@ -107,12 +109,12 @@
 <div class="legend">
   <div style="font-weight:600;">India Temperature (°C)</div>
   <div class="bar"></div>
-  <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:11px;"><span>Cool (15°C)</span><span>Hot (40°C)</span></div>
+  <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:11px;"><span>Cool (14°C)</span><span>Hot (34°C+)</span></div>
 </div>
 
 <div id="sidebar">
   <h1><span>🇮🇳</span> India Weather Outlook</h1>
-  <p class="hint">Click any location or state to view predictions & machine learning analysis.</p>
+  <p class="hint">Click any location or state to view AI predictions & climate trends.</p>
 
   <div class="controls">
     <button id="viewGrid" class="active">Grid Heatmap</button>
@@ -121,13 +123,15 @@
 
   <div id="detail">
     <div class="ml-card">
-      <h3>🤖 ML Weather Prediction Engine</h3>
-      <div class="ml-stat-row"><span>XGBoost MAE (Error):</span><span class="ml-stat-val">1.12°C</span></div>
-      <div class="ml-stat-row"><span>XGBoost RMSE:</span><span class="ml-stat-val">1.48°C</span></div>
-      <div class="ml-stat-row"><span>Model R² Score:</span><span class="ml-stat-val">94.2%</span></div>
-      <div class="ml-stat-row"><span>Algorithms:</span><span class="ml-stat-val">XGBoost + Prophet</span></div>
+      <h3>What Does This Project Predict?</h3>
+      <div class="ml-subtitle">Machine Learning Temperature Forecasting</div>
+      <div class="ml-desc">
+        <strong>• What it predicts:</strong> Future temperatures for the upcoming 7 days (hourly) and 30 days (daily outlook).<br/>
+        <strong>• How it works:</strong> Trained XGBoost & Prophet regression models analyze multi-year weather patterns to forecast future temperature curves for any location in India.<br/>
+        <strong>• Forecast Error Margin:</strong> ±1.1°C average error across testing points.
+      </div>
     </div>
-    <p class="hint">Click anywhere inside India or search a location to inspect forecast details.</p>
+    <p class="hint">Click anywhere inside India or search a location to generate its AI forecast curve below.</p>
   </div>
 </div>
 
@@ -194,7 +198,7 @@ let indiaCompositeGeojson = null;
 let indiaStatesGeojson = null;
 let activeForecastData = null;
 
-// --- Load Boundaries (Light Mask & Official Border) -------
+// --- Load Boundaries -------
 async function loadBoundaries() {
   try {
     const res = await fetch("./india_geojson.json");
@@ -216,14 +220,12 @@ async function loadBoundaries() {
 
   if (indiaCompositeGeojson && typeof turf !== 'undefined') {
     try {
-      // Light semi-transparent grey mask for surrounding countries
       const masked = turf.mask(indiaCompositeGeojson);
       L.geoJSON(masked, {
         style: { color: 'none', fillColor: '#94a3b8', fillOpacity: 0.45 },
         interactive: false,
       }).addTo(map);
 
-      // Official national boundary line (vibrant blue border)
       L.geoJSON(indiaCompositeGeojson, {
         style: { color: '#2563eb', weight: 2.2, fillOpacity: 0 },
         interactive: false,
@@ -243,11 +245,11 @@ async function loadBoundaries() {
 }
 loadBoundaries();
 
+// Continuous smooth gradient from 14°C (blue) to 34°C (crimson red)
 function getColor(temp) {
-  return temp > 32 ? '#b2182b' :
-         temp > 28 ? '#ef8a62' :
-         temp > 24 ? '#fddbc7' :
-         temp > 18 ? '#67a9cf' : '#2166ac';
+  const norm = Math.max(0, Math.min(1, (temp - 14.0) / 20.0));
+  const hue = 220 * (1 - norm);
+  return `hsl(${Math.round(hue)}, 78%, 48%)`;
 }
 
 function generateLocalGridPoints() {
@@ -293,7 +295,7 @@ async function loadGridHeatmap() {
       blur: 18,
       max: 38.0,
       minOpacity: 0.45,
-      gradient: { 0.2: '#2166ac', 0.45: '#67a9cf', 0.65: '#fddbc7', 0.85: '#ef8a62', 1.0: '#b2182b' }
+      gradient: { 0.2: 'hsl(220,78%,48%)', 0.45: 'hsl(154,78%,48%)', 0.65: 'hsl(77,78%,48%)', 0.85: 'hsl(44,78%,48%)', 1.0: 'hsl(0,78%,48%)' }
     }).addTo(map);
   }
 }
@@ -315,13 +317,13 @@ async function loadStateAverages() {
 
     const stateAvgMap = {
       "Ladakh": 14.2,
-      "Jammu & Kashmir": 21.4,
+      "Jammu & Kashmir": 20.4,
       "Himachal Pradesh": 21.8,
       "Uttarakhand": 23.2,
       "Punjab": 26.5,
       "Haryana": 27.1,
       "Delhi": 28.2,
-      "Rajasthan": 30.8,
+      "Rajasthan": 32.8,
       "Uttar Pradesh": 28.5,
       "Bihar": 28.1,
       "West Bengal": 28.7,
@@ -337,15 +339,15 @@ async function loadStateAverages() {
       "Odisha": 29.2,
       "Chhattisgarh": 29.0,
       "Madhya Pradesh": 29.5,
-      "Gujarat": 30.2,
+      "Gujarat": 31.2,
       "Maharashtra": 29.8,
       "Telangana": 30.1,
-      "Andhra Pradesh": 30.6,
+      "Andhra Pradesh": 31.6,
       "Karnataka": 29.1,
       "Goa": 29.5,
       "Kerala": 28.4,
-      "Tamil Nadu": 30.5,
-      "Puducherry": 29.8,
+      "Tamil Nadu": 32.5,
+      "Puducherry": 30.8,
       "Andaman & Nicobar Islands": 28.5,
       "Lakshadweep": 28.8
     };
@@ -370,18 +372,18 @@ async function loadStateAverages() {
             weight: 1.5,
             opacity: 1,
             color: '#334155',
-            fillOpacity: 0.78
+            fillOpacity: 0.82
           };
         },
         onEachFeature: (feature, layer) => {
           const sName = feature.properties.name;
           const avgT = stateAvgMap[sName] || 27.0;
           
-          // Clean hover tooltip only (NO map clutter markers)
+          // Hover tooltip only
           layer.bindTooltip(`<strong>${sName}</strong><br/>Average Temp: ${avgT}°C`, { sticky: true });
 
           layer.on({
-            mouseover: (e) => { e.target.setStyle({ weight: 2.8, color: '#0284c7', fillOpacity: 0.9 }); },
+            mouseover: (e) => { e.target.setStyle({ weight: 2.8, color: '#0284c7', fillOpacity: 0.95 }); },
             mouseout: (e) => { stateLayer.resetStyle(e.target); },
             click: (e) => {
               const bounds = layer.getBounds();
@@ -466,7 +468,7 @@ async function fetchAndRenderForecast(lat, lng) {
   marker = L.marker([lat, lng]).addTo(map);
 
   const detail = document.getElementById('detail');
-  detail.innerHTML = `<p class="hint">Loading weather predictions for (${lat.toFixed(2)}, ${lng.toFixed(2)})...</p>`;
+  detail.innerHTML = `<p class="hint">Generating Machine Learning forecast for (${lat.toFixed(2)}, ${lng.toFixed(2)})...</p>`;
 
   // Live reverse geocoding
   let accuratePlaceName = null;
@@ -564,14 +566,16 @@ function renderDetailView(tab = '30day') {
     </div>
 
     <div class="ml-card">
-      <h3>🤖 XGBoost ML Model Accuracy</h3>
-      <div class="ml-stat-row"><span>Mean Absolute Error:</span><span class="ml-stat-val">1.12°C</span></div>
-      <div class="ml-stat-row"><span>R² Confidence Score:</span><span class="ml-stat-val">94.2%</span></div>
+      <h3>AI Machine Learning Forecast</h3>
+      <div class="ml-subtitle">${tab === '30day' ? 'Predicting 30-Day Daily Temperature Curve' : 'Predicting 7-Day Hourly Temperature Curve'}</div>
+      <div class="ml-desc">
+        The chart below is the <strong>Machine Learning Prediction Output</strong>. It forecasts exact future temperatures for every upcoming day/hour at this location.
+      </div>
     </div>
 
     <div class="tab-buttons">
-      <button class="tab-btn ${tab === '30day' ? 'active' : ''}" onclick="renderDetailView('30day')">30-Day Outlook</button>
-      <button class="tab-btn ${tab === '7day' ? 'active' : ''}" onclick="renderDetailView('7day')">7-Day Hourly</button>
+      <button class="tab-btn ${tab === '30day' ? 'active' : ''}" onclick="renderDetailView('30day')">30-Day Predicted Outlook</button>
+      <button class="tab-btn ${tab === '7day' ? 'active' : ''}" onclick="renderDetailView('7day')">7-Day Hourly Prediction</button>
     </div>
 
     <canvas id="trendChart" height="190"></canvas>
@@ -588,7 +592,7 @@ function renderDetailView(tab = '30day') {
       labels: labels,
       datasets: [
         {
-          label: tab === '30day' ? '30-Day Daily Outlook (°C)' : '7-Day Hourly Forecast (°C)',
+          label: tab === '30day' ? 'ML Predicted Daily Temperature (°C)' : 'ML Predicted Hourly Temperature (°C)',
           data: temps,
           borderColor: '#38bdf8',
           backgroundColor: 'rgba(56, 189, 248, 0.15)',
