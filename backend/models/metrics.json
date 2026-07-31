@@ -1,0 +1,20 @@
+{
+  "mae": 1.18,
+  "rmse": 1.54,
+  "r2_score": 0.942,
+  "training_points": 16635,
+  "features": [
+    "lag_1h",
+    "lag_24h",
+    "lag_168h",
+    "roll_mean_24h",
+    "roll_std_24h",
+    "temp_ensemble_spread",
+    "hour_sin",
+    "hour_cos",
+    "doy_sin",
+    "doy_cos",
+    "month"
+  ],
+  "note": "Multi-model ensemble XGBoost + Prophet pipeline"
+}
