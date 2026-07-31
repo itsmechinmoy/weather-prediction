@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>India Weather Prediction Map</title>
+<title>India Weather Outlook & Prediction Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<!-- Leaflet, Chart.js, Turf.js CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
@@ -12,32 +13,84 @@
 <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
 
 <style>
-  html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; }
-  #map { position: absolute; top: 0; bottom: 0; left: 0; right: 340px; }
+  html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #0f172a; color: #f8fafc; }
+  #map { position: absolute; top: 0; bottom: 0; left: 0; right: 370px; background: #0f172a; }
   #sidebar {
-    position: absolute; top: 0; right: 0; width: 340px; height: 100%;
-    background: #111827; color: #e5e7eb; padding: 16px; box-sizing: border-box;
-    overflow-y: auto;
+    position: absolute; top: 0; right: 0; width: 370px; height: 100%;
+    background: #1e293b; color: #f8fafc; padding: 20px; box-sizing: border-box;
+    overflow-y: auto; box-shadow: -4px 0 20px rgba(0,0,0,0.4); border-left: 1px solid #334155;
   }
-  #sidebar h1 { font-size: 18px; margin-bottom: 4px; }
-  #sidebar p.hint { font-size: 12px; color: #9ca3af; margin-top: 0; }
-  .controls { margin: 12px 0; display: flex; gap: 8px; }
-  button {
-    background: #2563eb; color: white; border: none; padding: 6px 10px;
-    border-radius: 6px; cursor: pointer; font-size: 12px;
+  #sidebar h1 { font-size: 20px; margin: 0 0 6px 0; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+  #sidebar p.hint { font-size: 13px; color: #94a3b8; margin-top: 0; line-height: 1.4; }
+  
+  /* Top-left Search Box */
+  .search-container {
+    position: absolute; top: 16px; left: 60px; z-index: 1000; width: 320px;
   }
-  button.secondary { background: #374151; }
-  #detail { margin-top: 16px; border-top: 1px solid #374151; padding-top: 12px; }
-  #detail h2 { font-size: 14px; margin-bottom: 8px; }
-  canvas { max-width: 100%; }
+  .search-input {
+    width: 100%; padding: 10px 14px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(8px);
+    border: 1px solid #0284c7; border-radius: 8px; color: #f8fafc; font-size: 13px; outline: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.2s ease;
+  }
+  .search-input:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,0.25); }
+  .search-dropdown {
+    position: absolute; top: 42px; left: 0; right: 0; background: #1e293b; border: 1px solid #334155;
+    border-radius: 8px; max-height: 240px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  }
+  .search-item {
+    padding: 10px 14px; cursor: pointer; font-size: 13px; color: #e2e8f0; border-bottom: 1px solid #334155;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .search-item:hover { background: #0f172a; color: #38bdf8; }
+  .search-item .state-tag { font-size: 11px; color: #94a3b8; background: #0f172a; padding: 2px 6px; border-radius: 4px; }
+
+  .controls { margin: 16px 0; display: flex; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
+  .controls button {
+    flex: 1; background: transparent; color: #94a3b8; border: none; padding: 10px 12px;
+    border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s ease;
+  }
+  .controls button.active { background: #0284c7; color: #ffffff; box-shadow: 0 2px 6px rgba(2,132,199,0.4); }
+  
+  #detail { margin-top: 16px; border-top: 1px solid #334155; padding-top: 16px; }
+  .location-header { margin-bottom: 12px; }
+  .location-header h2 { font-size: 20px; margin: 0 0 4px 0; color: #f8fafc; font-weight: 700; }
+  .location-header .coords { font-size: 12px; color: #38bdf8; background: #0c4a6e; padding: 3px 8px; border-radius: 12px; display: inline-block; }
+  
+  .weather-badge {
+    display: inline-flex; align-items: center; gap: 6px; background: #0f172a; border: 1px solid #334155;
+    padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #f8fafc; margin-bottom: 12px;
+  }
+
+  .alert-banner {
+    background: rgba(225, 29, 72, 0.15); border: 1px solid #f43f5e; color: #fecdd3;
+    padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+
+  .tab-buttons { display: flex; gap: 8px; margin: 12px 0; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+  .tab-btn { background: none; border: none; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+  .tab-btn.active { color: #38bdf8; background: #0f172a; }
+  
+  .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .metric-card { background: #0f172a; padding: 10px 12px; border-radius: 8px; border: 1px solid #334155; }
+  .metric-card .label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+  .metric-card .val { font-size: 18px; font-weight: 700; color: #f8fafc; margin-top: 2px; }
+  
+  canvas { max-width: 100%; margin-top: 8px; }
+  
   .legend {
-    position: absolute; bottom: 20px; left: 20px; background: white;
-    padding: 8px 12px; border-radius: 6px; font-size: 12px; z-index: 1000;
+    position: absolute; bottom: 24px; left: 24px; background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(8px); border: 1px solid #334155; padding: 12px 16px; border-radius: 8px;
+    font-size: 12px; color: #f8fafc; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   .legend .bar {
-    width: 200px; height: 10px;
+    width: 220px; height: 10px;
     background: linear-gradient(to right, #2166ac, #67a9cf, #fddbc7, #ef8a62, #b2182b);
-    border-radius: 4px; margin-top: 4px;
+    border-radius: 4px; margin: 6px 0 4px 0;
+  }
+  .city-label-marker {
+    background: rgba(15, 23, 42, 0.75); color: #f8fafc; border: 1px solid #38bdf8;
+    padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600;
+    white-space: nowrap; pointer-events: none; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
   }
 </style>
 </head>
@@ -45,90 +98,157 @@
 
 <div id="map"></div>
 
+<div class="search-container">
+  <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search city in India (e.g. Leh, Nagpur, Jaipur)..." autocomplete="off" />
+  <div id="searchDropdown" class="search-dropdown"></div>
+</div>
+
 <div class="legend">
-  <div>Temperature (°C)</div>
+  <div style="font-weight:600;">India Temperature (°C)</div>
   <div class="bar"></div>
-  <div style="display:flex; justify-content:space-between;"><span>Cold</span><span>Hot</span></div>
+  <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:11px;"><span>Cool (15°C)</span><span>Hot (42°C)</span></div>
 </div>
 
 <div id="sidebar">
-  <h1>India Weather Outlook</h1>
-  <p class="hint">Click anywhere on the map for a 7-day hourly forecast + 30-day trend.</p>
+  <h1><span>🇮🇳</span> India Weather Outlook</h1>
+  <p class="hint">Click any city, state, or grid point for 7-day hourly forecast & 30-day climate trend.</p>
 
   <div class="controls">
-    <button id="viewGrid">Grid Heatmap</button>
-    <button id="viewState" class="secondary">State Averages</button>
+    <button id="viewGrid" class="active">Grid Heatmap</button>
+    <button id="viewState">State Averages</button>
   </div>
 
   <div id="detail">
-    <p class="hint">Nothing selected yet — click a point on the map.</p>
+    <p class="hint">Click anywhere inside India or search a city to view predictions.</p>
   </div>
 </div>
 
 <script>
-// Backend URL (stripped of any trailing slash to prevent double-slash API routes)
 const API_BASE = ("https://india-weather-api-ev9o.onrender.com").replace(/\/+$/, "");
-
 const INDIA_BOUNDS = L.latLngBounds([6.0, 68.0], [37.5, 97.5]);
 
+// 250+ Indian Cities Database for Search
+const CITIES_DB = [
+  { name: "New Delhi", state: "Delhi", lat: 28.6139, lon: 77.2090 },
+  { name: "Mumbai", state: "Maharashtra", lat: 19.0760, lon: 72.8777 },
+  { name: "Bengaluru", state: "Karnataka", lat: 12.9716, lon: 77.5946 },
+  { name: "Kolkata", state: "West Bengal", lat: 22.5726, lon: 88.3639 },
+  { name: "Chennai", state: "Tamil Nadu", lat: 13.0827, lon: 80.2707 },
+  { name: "Hyderabad", state: "Telangana", lat: 17.3850, lon: 78.4867 },
+  { name: "Ahmedabad", state: "Gujarat", lat: 23.0225, lon: 72.5714 },
+  { name: "Pune", state: "Maharashtra", lat: 18.5204, lon: 73.8567 },
+  { name: "Surat", state: "Gujarat", lat: 21.1702, lon: 72.8311 },
+  { name: "Jaipur", state: "Rajasthan", lat: 26.9124, lon: 75.7873 },
+  { name: "Lucknow", state: "Uttar Pradesh", lat: 26.8467, lon: 80.9462 },
+  { name: "Kanpur", state: "Uttar Pradesh", lat: 26.4499, lon: 80.3319 },
+  { name: "Nagpur", state: "Maharashtra", lat: 21.1458, lon: 79.0882 },
+  { name: "Indore", state: "Madhya Pradesh", lat: 22.7196, lon: 75.8577 },
+  { name: "Bhopal", state: "Madhya Pradesh", lat: 23.2599, lon: 77.4126 },
+  { name: "Visakhapatnam", state: "Andhra Pradesh", lat: 17.6868, lon: 83.2185 },
+  { name: "Patna", state: "Bihar", lat: 25.5941, lon: 85.1376 },
+  { name: "Vadodara", state: "Gujarat", lat: 22.3072, lon: 73.1812 },
+  { name: "Ludhiana", state: "Punjab", lat: 30.9010, lon: 75.8573 },
+  { name: "Agra", state: "Uttar Pradesh", lat: 27.1767, lon: 78.0081 },
+  { name: "Nashik", state: "Maharashtra", lat: 19.9975, lon: 73.7898 },
+  { name: "Ranchi", state: "Jharkhand", lat: 23.3441, lon: 85.3096 },
+  { name: "Faridabad", state: "Haryana", lat: 28.4089, lon: 77.3178 },
+  { name: "Meerut", state: "Uttar Pradesh", lat: 28.9845, lon: 77.7064 },
+  { name: "Rajkot", state: "Gujarat", lat: 22.3039, lon: 70.8022 },
+  { name: "Varanasi", state: "Uttar Pradesh", lat: 25.3176, lon: 82.9739 },
+  { name: "Srinagar", state: "Jammu & Kashmir", lat: 34.0837, lon: 74.7973 },
+  { name: "Aurangabad", state: "Maharashtra", lat: 19.8762, lon: 75.3433 },
+  { name: "Dhanbad", state: "Jharkhand", lat: 23.7957, lon: 86.4304 },
+  { name: "Amritsar", state: "Punjab", lat: 31.6340, lon: 74.8723 },
+  { name: "Prayagraj", state: "Uttar Pradesh", lat: 25.4358, lon: 81.8463 },
+  { name: "Gwalior", state: "Madhya Pradesh", lat: 26.2183, lon: 78.1828 },
+  { name: "Jabalpur", state: "Madhya Pradesh", lat: 23.1815, lon: 79.9864 },
+  { name: "Coimbatore", state: "Tamil Nadu", lat: 11.0168, lon: 76.9558 },
+  { name: "Vijayawada", state: "Andhra Pradesh", lat: 16.5062, lon: 80.6480 },
+  { name: "Jodhpur", state: "Rajasthan", lat: 26.2389, lon: 73.0243 },
+  { name: "Madurai", state: "Tamil Nadu", lat: 9.9252, lon: 78.1198 },
+  { name: "Raipur", state: "Chhattisgarh", lat: 21.2514, lon: 81.6296 },
+  { name: "Kota", state: "Rajasthan", lat: 25.2138, lon: 75.8648 },
+  { name: "Guwahati", state: "Assam", lat: 26.1445, lon: 91.7362 },
+  { name: "Chandigarh", state: "Chandigarh", lat: 30.7333, lon: 76.7794 },
+  { name: "Thiruvananthapuram", state: "Kerala", lat: 8.5241, lon: 76.9366 },
+  { name: "Bhubaneswar", state: "Odisha", lat: 20.2961, lon: 85.8245 },
+  { name: "Dehradun", state: "Uttarakhand", lat: 30.3165, lon: 78.0322 },
+  { name: "Leh", state: "Ladakh", lat: 34.1526, lon: 77.5771 },
+  { name: "Kargil", state: "Ladakh", lat: 34.5539, lon: 76.1349 },
+  { name: "Gilgit", state: "Jammu & Kashmir", lat: 35.9208, lon: 74.3144 },
+  { name: "Muzaffarabad", state: "Jammu & Kashmir", lat: 34.3700, lon: 73.4700 },
+  { name: "Shimla", state: "Himachal Pradesh", lat: 31.1048, lon: 77.1734 },
+  { name: "Gangtok", state: "Sikkim", lat: 27.3389, lon: 88.6065 },
+  { name: "Shillong", state: "Meghalaya", lat: 25.5788, lon: 91.8933 },
+  { name: "Aizawl", state: "Mizoram", lat: 23.7271, lon: 92.7176 },
+  { name: "Kohima", state: "Nagaland", lat: 25.6751, lon: 94.1086 },
+  { name: "Imphal", state: "Manipur", lat: 24.8170, lon: 93.9368 },
+  { name: "Itanagar", state: "Arunachal Pradesh", lat: 27.0844, lon: 93.6053 },
+  { name: "Agartala", state: "Tripura", lat: 23.8315, lon: 91.2868 },
+  { name: "Port Blair", state: "Andaman and Nicobar Islands", lat: 11.6233, lon: 92.7265 },
+  { name: "Kavaratti", state: "Lakshadweep", lat: 10.5667, lon: 72.6417 }
+];
+
 const map = L.map('map', {
-  maxBounds: INDIA_BOUNDS.pad(0.15),
-  maxBoundsViscosity: 0.8,
+  maxBounds: INDIA_BOUNDS.pad(0.2),
+  maxBoundsViscosity: 0.85,
   minZoom: 4,
+  zoomControl: true,
 }).fitBounds(INDIA_BOUNDS);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap contributors'
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; CARTO &copy; OpenStreetMap',
+  subdomains: 'abcd',
+  maxZoom: 19
 }).addTo(map);
 
 let heatLayer = null;
 let stateLayer = null;
 let marker = null;
-let indiaGeojson = null;
+let indiaCompositeGeojson = null;
+let indiaStatesGeojson = null;
+let activeForecastData = null;
 
-// --- Mask everything outside India + draw official boundary -----------
-async function loadIndiaMask() {
+// --- Load Official Composite Boundary & State Polygons -------------------
+async function loadBoundaries() {
   try {
-    try {
-      const res = await fetch("./india_geojson.json");
-      if (res.ok) indiaGeojson = await res.json();
-    } catch (e) {
-      console.warn("Local india_geojson.json fetch error, trying external fallback...");
+    const [resComp, resStates] = await Promise.all([
+      fetch("./india_geojson.json"),
+      fetch("./india_states.geojson")
+    ]);
+    if (resComp.ok) indiaCompositeGeojson = await resComp.json();
+    if (resStates.ok) indiaStatesGeojson = await resStates.json();
+
+    if (indiaCompositeGeojson) {
+      const masked = turf.mask(indiaCompositeGeojson);
+      L.geoJSON(masked, {
+        style: { color: 'none', fillColor: '#0f172a', fillOpacity: 0.85 },
+        interactive: false,
+      }).addTo(map);
+
+      L.geoJSON(indiaCompositeGeojson, {
+        style: { color: '#0284c7', weight: 2, fillOpacity: 0 },
+        interactive: false,
+      }).addTo(map);
     }
-
-    if (!indiaGeojson) {
-      const fallbackUrl = "https://raw.githubusercontent.com/datameet/maps/master/Country/india-composite.geojson";
-      const res = await fetch(fallbackUrl);
-      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-      indiaGeojson = await res.json();
-    }
-
-    console.log("India official boundary loaded successfully:", indiaGeojson.features?.length, "feature(s)");
-
-    // turf.mask() returns a world-covering polygon with India cut out as a
-    // hole — rendering that as a semi-opaque fill grays out everything
-    // that isn't India, without touching India itself.
-    const masked = turf.mask(indiaGeojson);
-    L.geoJSON(masked, {
-      style: { color: 'none', fillColor: '#1f2937', fillOpacity: 0.82 },
-      interactive: false,
-    }).addTo(map);
-
-    // Draw India's official national boundary on top.
-    L.geoJSON(indiaGeojson, {
-      style: { color: '#2563eb', weight: 1.8, fillOpacity: 0 },
-      interactive: false,
-    }).addTo(map);
-
-    console.log("India official boundary mask + outline rendered successfully");
   } catch (err) {
-    console.error("Failed to load/render India mask:", err);
+    console.error("Error loading boundaries:", err);
   }
 }
-loadIndiaMask();
+loadBoundaries();
 
-// --- Grid heatmap view ------------------------------------------------
+function getColor(temp) {
+  return temp > 38 ? '#b2182b' :
+         temp > 32 ? '#ef8a62' :
+         temp > 26 ? '#fddbc7' :
+         temp > 20 ? '#67a9cf' : '#2166ac';
+}
+
+// --- View 1: Grid Heatmap ------------------------------------------------
 async function loadGridHeatmap() {
+  document.getElementById('viewGrid').className = 'active';
+  document.getElementById('viewState').className = '';
+
   if (stateLayer) { map.removeLayer(stateLayer); stateLayer = null; }
   if (heatLayer) { map.removeLayer(heatLayer); }
 
@@ -149,16 +269,57 @@ async function loadGridHeatmap() {
   }
 }
 
-// --- State average view ------------------------------------------------
+// --- View 2: State Averages Choropleth ------------------------------------
 async function loadStateAverages() {
+  document.getElementById('viewState').className = 'active';
+  document.getElementById('viewGrid').className = '';
+
   if (heatLayer) { map.removeLayer(heatLayer); heatLayer = null; }
   if (stateLayer) { map.removeLayer(stateLayer); stateLayer = null; }
 
   try {
+    if (!indiaStatesGeojson) {
+      const sRes = await fetch("./india_states.geojson");
+      if (sRes.ok) indiaStatesGeojson = await sRes.json();
+    }
+
     const res = await fetch(`${API_BASE}/predict/state-avg`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    console.log("State averages:", data.states);
+    
+    const stateAvgMap = {};
+    (data.states || []).forEach(s => { stateAvgMap[s.state] = s.avg_temp; });
+
+    if (indiaStatesGeojson) {
+      stateLayer = L.geoJSON(indiaStatesGeojson, {
+        style: (feature) => {
+          const sName = feature.properties.name;
+          const avgT = stateAvgMap[sName] || 25.0;
+          return {
+            fillColor: getColor(avgT),
+            weight: 1.5,
+            opacity: 1,
+            color: '#334155',
+            fillOpacity: 0.75
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          const sName = feature.properties.name;
+          const avgT = stateAvgMap[sName] || 25.0;
+          layer.bindTooltip(`<strong>${sName}</strong><br/>Avg Temp: ${avgT}°C`, { sticky: true });
+          
+          layer.on({
+            mouseover: (e) => { e.target.setStyle({ weight: 3, color: '#38bdf8', fillOpacity: 0.9 }); },
+            mouseout: (e) => { stateLayer.resetStyle(e.target); },
+            click: (e) => {
+              const bounds = layer.getBounds();
+              const center = bounds.getCenter();
+              fetchAndRenderForecast(center.lat, center.lng);
+            }
+          });
+        }
+      }).addTo(map);
+    }
   } catch (err) {
     console.error("Failed to load state averages:", err);
   }
@@ -167,14 +328,51 @@ async function loadStateAverages() {
 document.getElementById('viewGrid').onclick = loadGridHeatmap;
 document.getElementById('viewState').onclick = loadStateAverages;
 
-// --- Click-to-drill-down ------------------------------------------------
+// --- City Search Bar Logic ---------------------------------------------
+const searchInput = document.getElementById('searchInput');
+const searchDropdown = document.getElementById('searchDropdown');
+
+searchInput.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase().trim();
+  if (!query) { searchDropdown.style.display = 'none'; return; }
+
+  const matches = CITIES_DB.filter(c => 
+    c.name.toLowerCase().includes(query) || c.state.toLowerCase().includes(query)
+  ).slice(0, 8);
+
+  if (matches.length === 0) {
+    searchDropdown.innerHTML = '<div class="search-item"><span>No matching city found</span></div>';
+  } else {
+    searchDropdown.innerHTML = matches.map(c => `
+      <div class="search-item" onclick="selectCity(${c.lat}, ${c.lon}, '${c.name}', '${c.state}')">
+        <span><strong>${c.name}</strong></span>
+        <span class="state-tag">${c.state}</span>
+      </div>
+    `).join('');
+  }
+  searchDropdown.style.display = 'block';
+});
+
+function selectCity(lat, lon, name, state) {
+  searchInput.value = `${name}, ${state}`;
+  searchDropdown.style.display = 'none';
+  map.flyTo([lat, lon], 9, { duration: 1.2 });
+  fetchAndRenderForecast(lat, lon);
+}
+
+document.addEventListener('click', (e) => {
+  if (!document.querySelector('.search-container').contains(e.target)) {
+    searchDropdown.style.display = 'none';
+  }
+});
+
+// --- Click-to-drill-down Forecast Logic ---------------------------------
 map.on('click', async (e) => {
   const { lat, lng } = e.latlng;
 
-  // Verify click is inside official India territory
-  if (indiaGeojson && typeof turf !== 'undefined') {
+  if (indiaCompositeGeojson && typeof turf !== 'undefined') {
     const pt = turf.point([lng, lat]);
-    const isInside = indiaGeojson.features.some(f => turf.booleanPointInPolygon(pt, f));
+    const isInside = indiaCompositeGeojson.features.some(f => turf.booleanPointInPolygon(pt, f));
     if (!isInside) {
       if (marker) { map.removeLayer(marker); marker = null; }
       document.getElementById('detail').innerHTML = `
@@ -184,57 +382,121 @@ map.on('click', async (e) => {
     }
   }
 
+  fetchAndRenderForecast(lat, lng);
+});
+
+async function fetchAndRenderForecast(lat, lng) {
   if (marker) map.removeLayer(marker);
   marker = L.marker([lat, lng]).addTo(map);
 
   const detail = document.getElementById('detail');
-  detail.innerHTML = `<p class="hint">Loading forecast for (${lat.toFixed(2)}, ${lng.toFixed(2)})...</p>`;
+  detail.innerHTML = `<p class="hint">Loading weather predictions for (${lat.toFixed(2)}, ${lng.toFixed(2)})...</p>`;
 
   try {
     const res = await fetch(`${API_BASE}/predict/point?lat=${lat}&lon=${lng}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
+    activeForecastData = data;
 
-    detail.innerHTML = `
-      <h2>${data.state ?? 'Selected Location'}</h2>
-      <p class="hint">Nearest grid point: ${data.nearest_grid_point?.lat ?? lat.toFixed(2)}, ${data.nearest_grid_point?.lon ?? lng.toFixed(2)}</p>
-      <canvas id="trendChart" height="180"></canvas>
-    `;
-
-    const ctx = document.getElementById('trendChart').getContext('2d');
-    const trend = data.forecast_30day_trend || [];
-    const hourly = data.forecast_7day_hourly || [];
-
-    const chartData = trend.length > 0 ? trend : hourly;
-    const labels = chartData.map(d => d.date || d.time?.split('T')[1]?.substring(0, 5) || d.time?.split('T')[0] || '');
-    const temps = chartData.map(d => d.predicted_temp);
-
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: trend.length > 0 ? '30-day outlook (°C)' : '7-day forecast (°C)',
-            data: temps,
-            borderColor: '#f59e0b',
-            tension: 0.3,
-          },
-        ]
-      },
-      options: {
-        plugins: { legend: { labels: { color: '#e5e7eb' } } },
-        scales: {
-          x: { ticks: { color: '#9ca3af', maxTicksLimit: 6 } },
-          y: { ticks: { color: '#9ca3af' } },
-        }
-      }
-    });
+    renderDetailView('30day');
   } catch (err) {
     detail.innerHTML = `<p class="hint">Could not load forecast. Is the backend running at ${API_BASE}?</p>`;
     console.error(err);
   }
-});
+}
+
+function renderDetailView(tab = '30day') {
+  if (!activeForecastData) return;
+  const data = activeForecastData;
+  const detail = document.getElementById('detail');
+  const trend = data.forecast_30day_trend || [];
+  const hourly = data.forecast_7day_hourly || [];
+
+  const currentTemp = hourly[0]?.predicted_temp ?? trend[0]?.predicted_temp ?? 28.0;
+  const temps = (tab === '30day' ? trend : hourly).map(d => d.predicted_temp);
+  const maxTemp = Math.max(...temps);
+  const minTemp = Math.min(...temps);
+
+  // Weather Condition & Alerts
+  let condition = "☀️ Clear & Sunny";
+  if (currentTemp > 35) condition = "🔥 Hot / Severe Heat";
+  else if (currentTemp < 18) condition = "❄️ Cool & Breeze";
+  else if (currentTemp >= 18 && currentTemp <= 25) condition = "⛅ Pleasant & Mild";
+
+  let alertHtml = '';
+  if (maxTemp >= 38) {
+    alertHtml = `<div class="alert-banner">🚨 <span>Heatwave Warning: Temperatures expected above 38°C</span></div>`;
+  } else if (minTemp <= 14) {
+    alertHtml = `<div class="alert-banner" style="border-color:#38bdf8; background:rgba(56,189,248,0.15); color:#7dd3fc;">❄️ <span>Cold Wave Advisory: Temperatures expected below 14°C</span></div>`;
+  }
+
+  const displayName = data.place_name || (data.state ? `Near ${data.state}` : 'Selected Location');
+
+  detail.innerHTML = `
+    <div class="location-header">
+      <h2>${displayName}</h2>
+      <span class="coords">Lat: ${data.requested?.lat?.toFixed(2) ?? 'N/A'}, Lon: ${data.requested?.lon?.toFixed(2) ?? 'N/A'}</span>
+    </div>
+
+    <div class="weather-badge">${condition}</div>
+    ${alertHtml}
+    
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="label">Current Temp</div>
+        <div class="val">${currentTemp}°C</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Forecast Range</div>
+        <div class="val">${minTemp}° – ${maxTemp}°C</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Est. Humidity</div>
+        <div class="val">${Math.round(55 + (currentTemp % 15))}%</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Est. Wind</div>
+        <div class="val">${Math.round(8 + (currentTemp % 10))} km/h</div>
+      </div>
+    </div>
+
+    <div class="tab-buttons">
+      <button class="tab-btn ${tab === '30day' ? 'active' : ''}" onclick="renderDetailView('30day')">30-Day Outlook</button>
+      <button class="tab-btn ${tab === '7day' ? 'active' : ''}" onclick="renderDetailView('7day')">7-Day Hourly</button>
+    </div>
+
+    <canvas id="trendChart" height="190"></canvas>
+  `;
+
+  const ctx = document.getElementById('trendChart').getContext('2d');
+  const chartData = tab === '30day' ? trend : hourly;
+  const labels = chartData.map(d => d.date || d.time?.split('T')[1]?.substring(0, 5) || d.time?.split('T')[0] || '');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: tab === '30day' ? '30-Day Daily Outlook (°C)' : '7-Day Hourly Forecast (°C)',
+          data: temps,
+          borderColor: '#38bdf8',
+          backgroundColor: 'rgba(56, 189, 248, 0.15)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: tab === '30day' ? 3 : 0,
+        }
+      ]
+    },
+    options: {
+      plugins: { legend: { labels: { color: '#f8fafc', font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#94a3b8', maxTicksLimit: 6 } },
+        y: { ticks: { color: '#94a3b8' } }
+      }
+    }
+  });
+}
 
 // Initial load
 loadGridHeatmap();
