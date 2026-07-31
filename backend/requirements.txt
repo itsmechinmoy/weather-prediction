@@ -10,3 +10,4 @@ shapely==2.0.5
 geopandas==0.14.4
 joblib==1.4.2
 python-dotenv==1.0.1
+pyarrow>=14.0.0
