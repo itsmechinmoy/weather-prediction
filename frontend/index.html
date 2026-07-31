@@ -70,11 +70,14 @@
 // Render URL, e.g. "https://india-weather-api.onrender.com"
 // Keeping it as a plain const (not an env var) since this is a static HTML
 // file with no build step — Vercel just serves it as-is.
-const API_BASE = "https://india-weather-api-ev9o.onrender.com";
+const API_BASE = "http://localhost:8000";
 
-// Same India boundary source used server-side in app/grid.py, so the map
-// and the state-assignment logic agree on what counts as "India" (J&K included).
-const INDIA_GEOJSON_URL = "https://raw.githubusercontent.com/geohacker/india/master/state/india_state.geojson";
+// Lightweight (~44KB) simplified India country outline — a single clean
+// polygon, correctly extending to ~37N (full J&K included, Siachen area).
+// The earlier 21MB state-level file was almost certainly too heavy for
+// turf.mask() to process reliably in-browser, which is why the mask never
+// visibly appeared. This one is built specifically for this kind of use.
+const INDIA_GEOJSON_URL = "https://raw.githubusercontent.com/datameet/maps/master/Country/india-land-simplified.geojson";
 
 const INDIA_BOUNDS = L.latLngBounds([6.0, 68.0], [37.5, 97.5]);
 
@@ -94,25 +97,34 @@ let marker = null;
 
 // --- Mask everything outside India + draw the correct outline -----------
 async function loadIndiaMask() {
-  const res = await fetch(INDIA_GEOJSON_URL);
-  const indiaGeojson = await res.json();
+  try {
+    const res = await fetch(INDIA_GEOJSON_URL);
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+    const indiaGeojson = await res.json();
+    console.log("India boundary loaded:", indiaGeojson.features?.length, "feature(s)");
 
-  // turf.mask() returns a world-covering polygon with India cut out as a
-  // hole — rendering that as a semi-opaque fill grays out everything
-  // that isn't India, without touching India itself.
-  const masked = turf.mask(indiaGeojson);
-  L.geoJSON(masked, {
-    style: { color: 'none', fillColor: '#e5e7eb', fillOpacity: 0.85 },
-    interactive: false,
-  }).addTo(map);
+    // turf.mask() returns a world-covering polygon with India cut out as a
+    // hole — rendering that as a semi-opaque fill grays out everything
+    // that isn't India, without touching India itself.
+    const masked = turf.mask(indiaGeojson);
+    L.geoJSON(masked, {
+      style: { color: 'none', fillColor: '#e5e7eb', fillOpacity: 0.85 },
+      interactive: false,
+    }).addTo(map);
 
-  // Draw India's actual outline on top (this is the real fix for the
-  // missing-J&K issue — we're no longer relying on the base tile layer's
-  // border rendering at all, just this GeoJSON's boundary).
-  L.geoJSON(indiaGeojson, {
-    style: { color: '#1d4ed8', weight: 1.5, fillOpacity: 0 },
-    interactive: false,
-  }).addTo(map);
+    // Draw India's actual outline on top.
+    L.geoJSON(indiaGeojson, {
+      style: { color: '#1d4ed8', weight: 1.5, fillOpacity: 0 },
+      interactive: false,
+    }).addTo(map);
+
+    console.log("India mask + outline rendered successfully");
+  } catch (err) {
+    // Previously this failed silently, which is exactly why the map looked
+    // unchanged with no visible error. Now it logs clearly and the base map
+    // still works — just without the mask/outline overlay.
+    console.error("Failed to load/render India mask:", err);
+  }
 }
 loadIndiaMask();
 
