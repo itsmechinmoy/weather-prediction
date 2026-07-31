@@ -87,11 +87,6 @@
     background: linear-gradient(to right, #2166ac, #67a9cf, #fddbc7, #ef8a62, #b2182b);
     border-radius: 4px; margin: 6px 0 4px 0;
   }
-  .city-label-marker {
-    background: rgba(15, 23, 42, 0.75); color: #f8fafc; border: 1px solid #38bdf8;
-    padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600;
-    white-space: nowrap; pointer-events: none; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-  }
 </style>
 </head>
 <body>
@@ -127,7 +122,7 @@
 const API_BASE = ("https://india-weather-api-ev9o.onrender.com").replace(/\/+$/, "");
 const INDIA_BOUNDS = L.latLngBounds([6.0, 68.0], [37.5, 97.5]);
 
-// 250+ Indian Cities Database for Search
+// 260+ Indian Cities Database for Search (with Official UT/State Designations)
 const CITIES_DB = [
   { name: "New Delhi", state: "Delhi", lat: 28.6139, lon: 77.2090 },
   { name: "Mumbai", state: "Maharashtra", lat: 19.0760, lon: 72.8777 },
@@ -175,8 +170,11 @@ const CITIES_DB = [
   { name: "Dehradun", state: "Uttarakhand", lat: 30.3165, lon: 78.0322 },
   { name: "Leh", state: "Ladakh", lat: 34.1526, lon: 77.5771 },
   { name: "Kargil", state: "Ladakh", lat: 34.5539, lon: 76.1349 },
-  { name: "Gilgit", state: "Jammu & Kashmir", lat: 35.9208, lon: 74.3144 },
+  { name: "Gilgit", state: "Ladakh", lat: 35.9208, lon: 74.3144 },
+  { name: "Skardu", state: "Ladakh", lat: 35.2971, lon: 75.6333 },
   { name: "Muzaffarabad", state: "Jammu & Kashmir", lat: 34.3700, lon: 73.4700 },
+  { name: "Mirpur", state: "Jammu & Kashmir", lat: 33.1484, lon: 73.7519 },
+  { name: "Jammu", state: "Jammu & Kashmir", lat: 32.7266, lon: 74.8570 },
   { name: "Shimla", state: "Himachal Pradesh", lat: 31.1048, lon: 77.1734 },
   { name: "Gangtok", state: "Sikkim", lat: 27.3389, lon: 88.6065 },
   { name: "Shillong", state: "Meghalaya", lat: 25.5788, lon: 91.8933 },
@@ -185,7 +183,7 @@ const CITIES_DB = [
   { name: "Imphal", state: "Manipur", lat: 24.8170, lon: 93.9368 },
   { name: "Itanagar", state: "Arunachal Pradesh", lat: 27.0844, lon: 93.6053 },
   { name: "Agartala", state: "Tripura", lat: 23.8315, lon: 91.2868 },
-  { name: "Port Blair", state: "Andaman and Nicobar Islands", lat: 11.6233, lon: 92.7265 },
+  { name: "Port Blair", state: "Andaman & Nicobar Islands", lat: 11.6233, lon: 92.7265 },
   { name: "Kavaratti", state: "Lakshadweep", lat: 10.5667, lon: 72.6417 }
 ];
 
@@ -209,30 +207,53 @@ let indiaCompositeGeojson = null;
 let indiaStatesGeojson = null;
 let activeForecastData = null;
 
-// --- Load Official Composite Boundary & State Polygons -------------------
+// --- Load Boundaries Independently (Light Mask & Official Border) -------
 async function loadBoundaries() {
+  // 1. Load national composite boundary for mask & outline
   try {
-    const [resComp, resStates] = await Promise.all([
-      fetch("./india_geojson.json"),
-      fetch("./india_states.geojson")
-    ]);
+    const resComp = await fetch("./india_geojson.json");
     if (resComp.ok) indiaCompositeGeojson = await resComp.json();
-    if (resStates.ok) indiaStatesGeojson = await resStates.json();
+  } catch (e) {
+    console.warn("Local india_geojson.json fetch error:", e);
+  }
 
-    if (indiaCompositeGeojson) {
+  if (!indiaCompositeGeojson) {
+    try {
+      const fallbackUrl = "https://raw.githubusercontent.com/datameet/maps/master/Country/india-composite.geojson";
+      const res = await fetch(fallbackUrl);
+      if (res.ok) indiaCompositeGeojson = await res.json();
+    } catch (e) {
+      console.error("Fallback boundary load error:", e);
+    }
+  }
+
+  if (indiaCompositeGeojson && typeof turf !== 'undefined') {
+    try {
+      // Light semi-transparent grey mask for surrounding countries (#94a3b8, opacity 0.45)
       const masked = turf.mask(indiaCompositeGeojson);
       L.geoJSON(masked, {
-        style: { color: 'none', fillColor: '#0f172a', fillOpacity: 0.85 },
+        style: { color: 'none', fillColor: '#94a3b8', fillOpacity: 0.45 },
         interactive: false,
       }).addTo(map);
 
+      // Official national boundary line (vibrant blue border)
       L.geoJSON(indiaCompositeGeojson, {
-        style: { color: '#0284c7', weight: 2, fillOpacity: 0 },
+        style: { color: '#2563eb', weight: 2.2, fillOpacity: 0 },
         interactive: false,
       }).addTo(map);
+
+      console.log("Light mask and official boundary outline rendered successfully");
+    } catch (err) {
+      console.error("Error creating turf mask:", err);
     }
-  } catch (err) {
-    console.error("Error loading boundaries:", err);
+  }
+
+  // 2. Load state boundary polygons independently for State Averages mode
+  try {
+    const resStates = await fetch("./india_states.geojson");
+    if (resStates.ok) indiaStatesGeojson = await resStates.json();
+  } catch (e) {
+    console.warn("Could not load india_states.geojson:", e);
   }
 }
 loadBoundaries();
