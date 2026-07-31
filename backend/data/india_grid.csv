@@ -1,0 +1,1110 @@
+lat,lon,state
+8.0,93.5,Andaman and Nicobar
+8.5,77.0,Kerala
+8.5,77.5,Tamil Nadu
+8.5,78.0,Tamil Nadu
+9.0,77.0,Kerala
+9.0,77.5,Tamil Nadu
+9.0,78.0,Tamil Nadu
+9.5,76.5,Kerala
+9.5,77.0,Kerala
+9.5,77.5,Tamil Nadu
+9.5,78.0,Tamil Nadu
+9.5,78.5,Tamil Nadu
+10.0,76.5,Kerala
+10.0,77.0,Kerala
+10.0,77.5,Tamil Nadu
+10.0,78.0,Tamil Nadu
+10.0,78.5,Tamil Nadu
+10.0,79.0,Tamil Nadu
+10.5,76.5,Kerala
+10.5,77.0,Tamil Nadu
+10.5,77.5,Tamil Nadu
+10.5,78.0,Tamil Nadu
+10.5,78.5,Tamil Nadu
+10.5,79.0,Tamil Nadu
+10.5,79.5,Tamil Nadu
+11.0,76.0,Kerala
+11.0,76.5,Kerala
+11.0,77.0,Tamil Nadu
+11.0,77.5,Tamil Nadu
+11.0,78.0,Tamil Nadu
+11.0,78.5,Tamil Nadu
+11.0,79.0,Tamil Nadu
+11.0,79.5,Tamil Nadu
+11.5,76.0,Kerala
+11.5,76.5,Tamil Nadu
+11.5,77.0,Tamil Nadu
+11.5,77.5,Tamil Nadu
+11.5,78.0,Tamil Nadu
+11.5,78.5,Tamil Nadu
+11.5,79.0,Tamil Nadu
+11.5,79.5,Tamil Nadu
+12.0,75.5,Kerala
+12.0,76.0,Karnataka
+12.0,76.5,Karnataka
+12.0,77.0,Karnataka
+12.0,77.5,Karnataka
+12.0,78.0,Tamil Nadu
+12.0,78.5,Tamil Nadu
+12.0,79.0,Tamil Nadu
+12.0,79.5,Tamil Nadu
+12.0,93.0,Andaman and Nicobar
+12.5,75.0,Kerala
+12.5,75.5,Karnataka
+12.5,76.0,Karnataka
+12.5,76.5,Karnataka
+12.5,77.0,Karnataka
+12.5,77.5,Karnataka
+12.5,78.0,Tamil Nadu
+12.5,78.5,Tamil Nadu
+12.5,79.0,Tamil Nadu
+12.5,79.5,Tamil Nadu
+12.5,80.0,Tamil Nadu
+13.0,75.0,Karnataka
+13.0,75.5,Karnataka
+13.0,76.0,Karnataka
+13.0,76.5,Karnataka
+13.0,77.0,Karnataka
+13.0,77.5,Karnataka
+13.0,78.0,Karnataka
+13.0,78.5,Andhra Pradesh
+13.0,79.0,Tamil Nadu
+13.0,79.5,Tamil Nadu
+13.0,80.0,Tamil Nadu
+13.5,75.0,Karnataka
+13.5,75.5,Karnataka
+13.5,76.0,Karnataka
+13.5,76.5,Karnataka
+13.5,77.0,Karnataka
+13.5,77.5,Karnataka
+13.5,78.0,Karnataka
+13.5,78.5,Andhra Pradesh
+13.5,79.0,Andhra Pradesh
+13.5,79.5,Andhra Pradesh
+13.5,80.0,Andhra Pradesh
+13.5,93.0,Andaman and Nicobar
+14.0,75.0,Karnataka
+14.0,75.5,Karnataka
+14.0,76.0,Karnataka
+14.0,76.5,Karnataka
+14.0,77.0,Andhra Pradesh
+14.0,77.5,Andhra Pradesh
+14.0,78.0,Andhra Pradesh
+14.0,78.5,Andhra Pradesh
+14.0,79.0,Andhra Pradesh
+14.0,79.5,Andhra Pradesh
+14.0,80.0,Andhra Pradesh
+14.5,74.5,Karnataka
+14.5,75.0,Karnataka
+14.5,75.5,Karnataka
+14.5,76.0,Karnataka
+14.5,76.5,Karnataka
+14.5,77.0,Andhra Pradesh
+14.5,77.5,Andhra Pradesh
+14.5,78.0,Andhra Pradesh
+14.5,78.5,Andhra Pradesh
+14.5,79.0,Andhra Pradesh
+14.5,79.5,Andhra Pradesh
+14.5,80.0,Andhra Pradesh
+15.0,74.5,Karnataka
+15.0,75.0,Karnataka
+15.0,75.5,Karnataka
+15.0,76.0,Karnataka
+15.0,76.5,Karnataka
+15.0,77.0,Andhra Pradesh
+15.0,77.5,Andhra Pradesh
+15.0,78.0,Andhra Pradesh
+15.0,78.5,Andhra Pradesh
+15.0,79.0,Andhra Pradesh
+15.0,79.5,Andhra Pradesh
+15.0,80.0,Andhra Pradesh
+15.5,74.0,Goa
+15.5,74.5,Karnataka
+15.5,75.0,Karnataka
+15.5,75.5,Karnataka
+15.5,76.0,Karnataka
+15.5,76.5,Karnataka
+15.5,77.0,Andhra Pradesh
+15.5,77.5,Andhra Pradesh
+15.5,78.0,Andhra Pradesh
+15.5,78.5,Andhra Pradesh
+15.5,79.0,Andhra Pradesh
+15.5,79.5,Andhra Pradesh
+15.5,80.0,Andhra Pradesh
+16.0,73.5,Maharashtra
+16.0,74.0,Maharashtra
+16.0,74.5,Karnataka
+16.0,75.0,Karnataka
+16.0,75.5,Karnataka
+16.0,76.0,Karnataka
+16.0,76.5,Karnataka
+16.0,77.0,Karnataka
+16.0,77.5,Karnataka
+16.0,78.0,Andhra Pradesh
+16.0,78.5,Andhra Pradesh
+16.0,79.0,Andhra Pradesh
+16.0,79.5,Andhra Pradesh
+16.0,80.0,Andhra Pradesh
+16.0,80.5,Andhra Pradesh
+16.0,81.0,Andhra Pradesh
+16.5,73.5,Maharashtra
+16.5,74.0,Maharashtra
+16.5,74.5,Karnataka
+16.5,75.0,Karnataka
+16.5,75.5,Karnataka
+16.5,76.0,Karnataka
+16.5,76.5,Karnataka
+16.5,77.0,Karnataka
+16.5,77.5,Andhra Pradesh
+16.5,78.0,Andhra Pradesh
+16.5,78.5,Andhra Pradesh
+16.5,79.0,Andhra Pradesh
+16.5,79.5,Andhra Pradesh
+16.5,80.0,Andhra Pradesh
+16.5,80.5,Andhra Pradesh
+16.5,81.0,Andhra Pradesh
+16.5,81.5,Andhra Pradesh
+16.5,82.0,Andhra Pradesh
+17.0,73.5,Maharashtra
+17.0,74.0,Maharashtra
+17.0,74.5,Maharashtra
+17.0,75.0,Maharashtra
+17.0,75.5,Maharashtra
+17.0,76.0,Karnataka
+17.0,76.5,Karnataka
+17.0,77.0,Karnataka
+17.0,77.5,Andhra Pradesh
+17.0,78.0,Andhra Pradesh
+17.0,78.5,Andhra Pradesh
+17.0,79.0,Andhra Pradesh
+17.0,79.5,Andhra Pradesh
+17.0,80.0,Andhra Pradesh
+17.0,80.5,Andhra Pradesh
+17.0,81.0,Andhra Pradesh
+17.0,81.5,Andhra Pradesh
+17.0,82.0,Andhra Pradesh
+17.5,73.5,Maharashtra
+17.5,74.0,Maharashtra
+17.5,74.5,Maharashtra
+17.5,75.0,Maharashtra
+17.5,75.5,Maharashtra
+17.5,76.0,Maharashtra
+17.5,76.5,Karnataka
+17.5,77.0,Karnataka
+17.5,77.5,Karnataka
+17.5,78.0,Andhra Pradesh
+17.5,78.5,Andhra Pradesh
+17.5,79.0,Andhra Pradesh
+17.5,79.5,Andhra Pradesh
+17.5,80.0,Andhra Pradesh
+17.5,80.5,Andhra Pradesh
+17.5,81.0,Andhra Pradesh
+17.5,81.5,Andhra Pradesh
+17.5,82.0,Andhra Pradesh
+17.5,82.5,Andhra Pradesh
+17.5,83.0,Andhra Pradesh
+18.0,73.5,Maharashtra
+18.0,74.0,Maharashtra
+18.0,74.5,Maharashtra
+18.0,75.0,Maharashtra
+18.0,75.5,Maharashtra
+18.0,76.0,Maharashtra
+18.0,76.5,Maharashtra
+18.0,77.0,Karnataka
+18.0,77.5,Karnataka
+18.0,78.0,Andhra Pradesh
+18.0,78.5,Andhra Pradesh
+18.0,79.0,Andhra Pradesh
+18.0,79.5,Andhra Pradesh
+18.0,80.0,Andhra Pradesh
+18.0,80.5,Andhra Pradesh
+18.0,81.0,Chhattisgarh
+18.0,81.5,Orissa
+18.0,82.0,Andhra Pradesh
+18.0,82.5,Andhra Pradesh
+18.0,83.0,Andhra Pradesh
+18.0,83.5,Andhra Pradesh
+18.5,73.0,Maharashtra
+18.5,73.5,Maharashtra
+18.5,74.0,Maharashtra
+18.5,74.5,Maharashtra
+18.5,75.0,Maharashtra
+18.5,75.5,Maharashtra
+18.5,76.0,Maharashtra
+18.5,76.5,Maharashtra
+18.5,77.0,Maharashtra
+18.5,77.5,Maharashtra
+18.5,78.0,Andhra Pradesh
+18.5,78.5,Andhra Pradesh
+18.5,79.0,Andhra Pradesh
+18.5,79.5,Andhra Pradesh
+18.5,80.0,Andhra Pradesh
+18.5,80.5,Andhra Pradesh
+18.5,81.0,Chhattisgarh
+18.5,81.5,Chhattisgarh
+18.5,82.0,Orissa
+18.5,82.5,Andhra Pradesh
+18.5,83.0,Orissa
+18.5,83.5,Andhra Pradesh
+18.5,84.0,Andhra Pradesh
+19.0,73.5,Maharashtra
+19.0,74.0,Maharashtra
+19.0,74.5,Maharashtra
+19.0,75.0,Maharashtra
+19.0,75.5,Maharashtra
+19.0,76.0,Maharashtra
+19.0,76.5,Maharashtra
+19.0,77.0,Maharashtra
+19.0,77.5,Maharashtra
+19.0,78.0,Andhra Pradesh
+19.0,78.5,Andhra Pradesh
+19.0,79.0,Andhra Pradesh
+19.0,79.5,Andhra Pradesh
+19.0,80.0,Maharashtra
+19.0,80.5,Chhattisgarh
+19.0,81.0,Chhattisgarh
+19.0,81.5,Chhattisgarh
+19.0,82.0,Chhattisgarh
+19.0,82.5,Orissa
+19.0,83.0,Orissa
+19.0,83.5,Andhra Pradesh
+19.0,84.0,Orissa
+19.0,84.5,Andhra Pradesh
+19.5,73.0,Maharashtra
+19.5,73.5,Maharashtra
+19.5,74.0,Maharashtra
+19.5,74.5,Maharashtra
+19.5,75.0,Maharashtra
+19.5,75.5,Maharashtra
+19.5,76.0,Maharashtra
+19.5,76.5,Maharashtra
+19.5,77.0,Maharashtra
+19.5,77.5,Maharashtra
+19.5,78.0,Maharashtra
+19.5,78.5,Andhra Pradesh
+19.5,79.0,Andhra Pradesh
+19.5,79.5,Andhra Pradesh
+19.5,80.0,Maharashtra
+19.5,80.5,Maharashtra
+19.5,81.0,Chhattisgarh
+19.5,81.5,Chhattisgarh
+19.5,82.0,Chhattisgarh
+19.5,82.5,Orissa
+19.5,83.0,Orissa
+19.5,83.5,Orissa
+19.5,84.0,Orissa
+19.5,84.5,Orissa
+19.5,85.0,Orissa
+20.0,73.0,Maharashtra
+20.0,73.5,Maharashtra
+20.0,74.0,Maharashtra
+20.0,74.5,Maharashtra
+20.0,75.0,Maharashtra
+20.0,75.5,Maharashtra
+20.0,76.0,Maharashtra
+20.0,76.5,Maharashtra
+20.0,77.0,Maharashtra
+20.0,77.5,Maharashtra
+20.0,78.0,Maharashtra
+20.0,78.5,Maharashtra
+20.0,79.0,Maharashtra
+20.0,79.5,Maharashtra
+20.0,80.0,Maharashtra
+20.0,80.5,Maharashtra
+20.0,81.0,Chhattisgarh
+20.0,81.5,Chhattisgarh
+20.0,82.0,Orissa
+20.0,82.5,Chhattisgarh
+20.0,83.0,Orissa
+20.0,83.5,Orissa
+20.0,84.0,Orissa
+20.0,84.5,Orissa
+20.0,85.0,Orissa
+20.0,85.5,Orissa
+20.0,86.0,Orissa
+20.5,73.0,Gujarat
+20.5,73.5,Maharashtra
+20.5,74.0,Maharashtra
+20.5,74.5,Maharashtra
+20.5,75.0,Maharashtra
+20.5,75.5,Maharashtra
+20.5,76.0,Maharashtra
+20.5,76.5,Maharashtra
+20.5,77.0,Maharashtra
+20.5,77.5,Maharashtra
+20.5,78.0,Maharashtra
+20.5,78.5,Maharashtra
+20.5,79.0,Maharashtra
+20.5,79.5,Maharashtra
+20.5,80.0,Maharashtra
+20.5,80.5,Maharashtra
+20.5,81.0,Chhattisgarh
+20.5,81.5,Chhattisgarh
+20.5,82.0,Chhattisgarh
+20.5,82.5,Orissa
+20.5,83.0,Orissa
+20.5,83.5,Orissa
+20.5,84.0,Orissa
+20.5,84.5,Orissa
+20.5,85.0,Orissa
+20.5,85.5,Orissa
+20.5,86.0,Orissa
+20.5,86.5,Orissa
+21.0,70.5,Gujarat
+21.0,71.0,Gujarat
+21.0,71.5,Gujarat
+21.0,73.0,Gujarat
+21.0,73.5,Gujarat
+21.0,74.0,Maharashtra
+21.0,74.5,Maharashtra
+21.0,75.0,Maharashtra
+21.0,75.5,Maharashtra
+21.0,76.0,Maharashtra
+21.0,76.5,Maharashtra
+21.0,77.0,Maharashtra
+21.0,77.5,Maharashtra
+21.0,78.0,Maharashtra
+21.0,78.5,Maharashtra
+21.0,79.0,Maharashtra
+21.0,79.5,Maharashtra
+21.0,80.0,Maharashtra
+21.0,80.5,Chhattisgarh
+21.0,81.0,Chhattisgarh
+21.0,81.5,Chhattisgarh
+21.0,82.0,Chhattisgarh
+21.0,82.5,Chhattisgarh
+21.0,83.0,Orissa
+21.0,83.5,Orissa
+21.0,84.0,Orissa
+21.0,84.5,Orissa
+21.0,85.0,Orissa
+21.0,85.5,Orissa
+21.0,86.0,Orissa
+21.0,86.5,Orissa
+21.5,70.0,Gujarat
+21.5,70.5,Gujarat
+21.5,71.0,Gujarat
+21.5,71.5,Gujarat
+21.5,72.0,Gujarat
+21.5,73.0,Gujarat
+21.5,73.5,Gujarat
+21.5,74.0,Gujarat
+21.5,74.5,Maharashtra
+21.5,75.0,Maharashtra
+21.5,75.5,Madhya Pradesh
+21.5,76.0,Madhya Pradesh
+21.5,76.5,Madhya Pradesh
+21.5,77.0,Maharashtra
+21.5,77.5,Madhya Pradesh
+21.5,78.0,Madhya Pradesh
+21.5,78.5,Maharashtra
+21.5,79.0,Maharashtra
+21.5,79.5,Maharashtra
+21.5,80.0,Maharashtra
+21.5,80.5,Madhya Pradesh
+21.5,81.0,Chhattisgarh
+21.5,81.5,Chhattisgarh
+21.5,82.0,Chhattisgarh
+21.5,82.5,Chhattisgarh
+21.5,83.0,Chhattisgarh
+21.5,83.5,Orissa
+21.5,84.0,Orissa
+21.5,84.5,Orissa
+21.5,85.0,Orissa
+21.5,85.5,Orissa
+21.5,86.0,Orissa
+21.5,86.5,Orissa
+21.5,87.0,Orissa
+22.0,69.5,Gujarat
+22.0,70.0,Gujarat
+22.0,70.5,Gujarat
+22.0,71.0,Gujarat
+22.0,71.5,Gujarat
+22.0,72.0,Gujarat
+22.0,73.0,Gujarat
+22.0,73.5,Gujarat
+22.0,74.0,Gujarat
+22.0,74.5,Madhya Pradesh
+22.0,75.0,Madhya Pradesh
+22.0,75.5,Madhya Pradesh
+22.0,76.0,Madhya Pradesh
+22.0,76.5,Madhya Pradesh
+22.0,77.0,Madhya Pradesh
+22.0,77.5,Madhya Pradesh
+22.0,78.0,Madhya Pradesh
+22.0,78.5,Madhya Pradesh
+22.0,79.0,Madhya Pradesh
+22.0,79.5,Madhya Pradesh
+22.0,80.0,Madhya Pradesh
+22.0,80.5,Madhya Pradesh
+22.0,81.0,Chhattisgarh
+22.0,81.5,Chhattisgarh
+22.0,82.0,Chhattisgarh
+22.0,82.5,Chhattisgarh
+22.0,83.0,Chhattisgarh
+22.0,83.5,Chhattisgarh
+22.0,84.0,Orissa
+22.0,84.5,Orissa
+22.0,85.0,Orissa
+22.0,85.5,Orissa
+22.0,86.0,Orissa
+22.0,86.5,Orissa
+22.0,87.0,Orissa
+22.0,87.5,West Bengal
+22.0,88.0,West Bengal
+22.0,88.5,West Bengal
+22.0,89.0,West Bengal
+22.0,93.0,Mizoram
+22.5,70.0,Gujarat
+22.5,70.5,Gujarat
+22.5,71.0,Gujarat
+22.5,71.5,Gujarat
+22.5,72.0,Gujarat
+22.5,72.5,Gujarat
+22.5,73.0,Gujarat
+22.5,73.5,Gujarat
+22.5,74.0,Gujarat
+22.5,74.5,Madhya Pradesh
+22.5,75.0,Madhya Pradesh
+22.5,75.5,Madhya Pradesh
+22.5,76.0,Madhya Pradesh
+22.5,76.5,Madhya Pradesh
+22.5,77.0,Madhya Pradesh
+22.5,77.5,Madhya Pradesh
+22.5,78.0,Madhya Pradesh
+22.5,78.5,Madhya Pradesh
+22.5,79.0,Madhya Pradesh
+22.5,79.5,Madhya Pradesh
+22.5,80.0,Madhya Pradesh
+22.5,80.5,Madhya Pradesh
+22.5,81.0,Madhya Pradesh
+22.5,81.5,Chhattisgarh
+22.5,82.0,Chhattisgarh
+22.5,82.5,Chhattisgarh
+22.5,83.0,Chhattisgarh
+22.5,83.5,Chhattisgarh
+22.5,84.0,Orissa
+22.5,84.5,Jharkhand
+22.5,85.0,Jharkhand
+22.5,85.5,Jharkhand
+22.5,86.0,Orissa
+22.5,86.5,Jharkhand
+22.5,87.0,West Bengal
+22.5,87.5,West Bengal
+22.5,88.0,West Bengal
+22.5,88.5,West Bengal
+22.5,93.0,Mizoram
+23.0,69.0,Gujarat
+23.0,69.5,Gujarat
+23.0,70.0,Gujarat
+23.0,70.5,Gujarat
+23.0,71.0,Gujarat
+23.0,71.5,Gujarat
+23.0,72.0,Gujarat
+23.0,72.5,Gujarat
+23.0,73.0,Gujarat
+23.0,73.5,Gujarat
+23.0,74.0,Gujarat
+23.0,74.5,Madhya Pradesh
+23.0,75.0,Madhya Pradesh
+23.0,75.5,Madhya Pradesh
+23.0,76.0,Madhya Pradesh
+23.0,76.5,Madhya Pradesh
+23.0,77.0,Madhya Pradesh
+23.0,77.5,Madhya Pradesh
+23.0,78.0,Madhya Pradesh
+23.0,78.5,Madhya Pradesh
+23.0,79.0,Madhya Pradesh
+23.0,79.5,Madhya Pradesh
+23.0,80.0,Madhya Pradesh
+23.0,80.5,Madhya Pradesh
+23.0,81.0,Madhya Pradesh
+23.0,81.5,Madhya Pradesh
+23.0,82.0,Chhattisgarh
+23.0,82.5,Chhattisgarh
+23.0,83.0,Chhattisgarh
+23.0,83.5,Chhattisgarh
+23.0,84.0,Chhattisgarh
+23.0,84.5,Jharkhand
+23.0,85.0,Jharkhand
+23.0,85.5,Jharkhand
+23.0,86.0,Jharkhand
+23.0,86.5,West Bengal
+23.0,87.0,West Bengal
+23.0,87.5,West Bengal
+23.0,88.0,West Bengal
+23.0,88.5,West Bengal
+23.0,92.5,Mizoram
+23.0,93.0,Mizoram
+23.5,68.5,Gujarat
+23.5,69.0,Gujarat
+23.5,69.5,Gujarat
+23.5,70.0,Gujarat
+23.5,70.5,Gujarat
+23.5,71.0,Gujarat
+23.5,71.5,Gujarat
+23.5,72.0,Gujarat
+23.5,72.5,Gujarat
+23.5,73.0,Gujarat
+23.5,73.5,Gujarat
+23.5,74.0,Rajasthan
+23.5,74.5,Rajasthan
+23.5,75.0,Madhya Pradesh
+23.5,75.5,Madhya Pradesh
+23.5,76.0,Madhya Pradesh
+23.5,76.5,Madhya Pradesh
+23.5,77.0,Madhya Pradesh
+23.5,77.5,Madhya Pradesh
+23.5,78.0,Madhya Pradesh
+23.5,78.5,Madhya Pradesh
+23.5,79.0,Madhya Pradesh
+23.5,79.5,Madhya Pradesh
+23.5,80.0,Madhya Pradesh
+23.5,80.5,Madhya Pradesh
+23.5,81.0,Madhya Pradesh
+23.5,81.5,Madhya Pradesh
+23.5,82.0,Chhattisgarh
+23.5,82.5,Chhattisgarh
+23.5,83.0,Chhattisgarh
+23.5,83.5,Chhattisgarh
+23.5,84.0,Chhattisgarh
+23.5,84.5,Jharkhand
+23.5,85.0,Jharkhand
+23.5,85.5,Jharkhand
+23.5,86.0,Jharkhand
+23.5,86.5,West Bengal
+23.5,87.0,West Bengal
+23.5,87.5,West Bengal
+23.5,88.0,West Bengal
+23.5,88.5,West Bengal
+23.5,91.5,Tripura
+23.5,92.5,Mizoram
+23.5,93.0,Mizoram
+24.0,69.0,Gujarat
+24.0,69.5,Gujarat
+24.0,70.0,Gujarat
+24.0,70.5,Gujarat
+24.0,71.0,Gujarat
+24.0,71.5,Gujarat
+24.0,72.0,Gujarat
+24.0,72.5,Gujarat
+24.0,73.0,Gujarat
+24.0,73.5,Rajasthan
+24.0,74.0,Rajasthan
+24.0,74.5,Rajasthan
+24.0,75.0,Madhya Pradesh
+24.0,75.5,Rajasthan
+24.0,76.0,Madhya Pradesh
+24.0,76.5,Madhya Pradesh
+24.0,77.0,Madhya Pradesh
+24.0,77.5,Madhya Pradesh
+24.0,78.0,Madhya Pradesh
+24.0,78.5,Madhya Pradesh
+24.0,79.0,Madhya Pradesh
+24.0,79.5,Madhya Pradesh
+24.0,80.0,Madhya Pradesh
+24.0,80.5,Madhya Pradesh
+24.0,81.0,Madhya Pradesh
+24.0,81.5,Madhya Pradesh
+24.0,82.0,Madhya Pradesh
+24.0,82.5,Madhya Pradesh
+24.0,83.0,Uttar Pradesh
+24.0,83.5,Chhattisgarh
+24.0,84.0,Jharkhand
+24.0,84.5,Jharkhand
+24.0,85.0,Jharkhand
+24.0,85.5,Jharkhand
+24.0,86.0,Jharkhand
+24.0,86.5,Jharkhand
+24.0,87.0,Jharkhand
+24.0,87.5,West Bengal
+24.0,88.0,West Bengal
+24.0,88.5,West Bengal
+24.0,91.5,Tripura
+24.0,92.0,Tripura
+24.0,92.5,Mizoram
+24.0,93.0,Mizoram
+24.0,93.5,Manipur
+24.0,94.0,Manipur
+24.5,71.5,Gujarat
+24.5,72.0,Gujarat
+24.5,72.5,Rajasthan
+24.5,73.0,Rajasthan
+24.5,73.5,Rajasthan
+24.5,74.0,Rajasthan
+24.5,74.5,Rajasthan
+24.5,75.0,Madhya Pradesh
+24.5,75.5,Madhya Pradesh
+24.5,76.0,Rajasthan
+24.5,76.5,Rajasthan
+24.5,77.0,Rajasthan
+24.5,77.5,Madhya Pradesh
+24.5,78.0,Madhya Pradesh
+24.5,78.5,Uttar Pradesh
+24.5,79.0,Madhya Pradesh
+24.5,79.5,Madhya Pradesh
+24.5,80.0,Madhya Pradesh
+24.5,80.5,Madhya Pradesh
+24.5,81.0,Madhya Pradesh
+24.5,81.5,Madhya Pradesh
+24.5,82.0,Madhya Pradesh
+24.5,82.5,Madhya Pradesh
+24.5,83.0,Uttar Pradesh
+24.5,83.5,Jharkhand
+24.5,84.0,Jharkhand
+24.5,84.5,Bihar
+24.5,85.0,Bihar
+24.5,85.5,Jharkhand
+24.5,86.0,Jharkhand
+24.5,86.5,Jharkhand
+24.5,87.0,Jharkhand
+24.5,87.5,Jharkhand
+24.5,88.0,West Bengal
+24.5,92.5,Assam
+24.5,93.0,Assam
+24.5,93.5,Manipur
+24.5,94.0,Manipur
+25.0,71.0,Rajasthan
+25.0,71.5,Rajasthan
+25.0,72.0,Rajasthan
+25.0,72.5,Rajasthan
+25.0,73.0,Rajasthan
+25.0,73.5,Rajasthan
+25.0,74.0,Rajasthan
+25.0,74.5,Rajasthan
+25.0,75.0,Rajasthan
+25.0,75.5,Rajasthan
+25.0,76.0,Rajasthan
+25.0,76.5,Rajasthan
+25.0,77.0,Madhya Pradesh
+25.0,77.5,Madhya Pradesh
+25.0,78.0,Madhya Pradesh
+25.0,78.5,Uttar Pradesh
+25.0,79.0,Madhya Pradesh
+25.0,79.5,Madhya Pradesh
+25.0,80.0,Madhya Pradesh
+25.0,80.5,Madhya Pradesh
+25.0,81.0,Uttar Pradesh
+25.0,81.5,Madhya Pradesh
+25.0,82.0,Uttar Pradesh
+25.0,82.5,Uttar Pradesh
+25.0,83.0,Uttar Pradesh
+25.0,83.5,Bihar
+25.0,84.0,Bihar
+25.0,84.5,Bihar
+25.0,85.0,Bihar
+25.0,85.5,Bihar
+25.0,86.0,Bihar
+25.0,86.5,Bihar
+25.0,87.0,Bihar
+25.0,87.5,Jharkhand
+25.0,88.0,West Bengal
+25.0,92.5,Assam
+25.0,93.0,Assam
+25.0,93.5,Manipur
+25.0,94.0,Manipur
+25.0,94.5,Manipur
+25.5,71.0,Rajasthan
+25.5,71.5,Rajasthan
+25.5,72.0,Rajasthan
+25.5,72.5,Rajasthan
+25.5,73.0,Rajasthan
+25.5,73.5,Rajasthan
+25.5,74.0,Rajasthan
+25.5,74.5,Rajasthan
+25.5,75.0,Rajasthan
+25.5,75.5,Rajasthan
+25.5,76.0,Rajasthan
+25.5,76.5,Rajasthan
+25.5,77.0,Madhya Pradesh
+25.5,77.5,Madhya Pradesh
+25.5,78.0,Madhya Pradesh
+25.5,78.5,Uttar Pradesh
+25.5,79.0,Uttar Pradesh
+25.5,79.5,Uttar Pradesh
+25.5,80.0,Uttar Pradesh
+25.5,80.5,Uttar Pradesh
+25.5,81.0,Uttar Pradesh
+25.5,81.5,Uttar Pradesh
+25.5,82.0,Uttar Pradesh
+25.5,82.5,Uttar Pradesh
+25.5,83.0,Uttar Pradesh
+25.5,83.5,Uttar Pradesh
+25.5,84.0,Bihar
+25.5,84.5,Bihar
+25.5,85.0,Bihar
+25.5,85.5,Bihar
+25.5,86.0,Bihar
+25.5,86.5,Bihar
+25.5,87.0,Bihar
+25.5,87.5,Bihar
+25.5,88.0,Bihar
+25.5,88.5,West Bengal
+25.5,90.0,Meghalaya
+25.5,90.5,Meghalaya
+25.5,91.0,Meghalaya
+25.5,91.5,Meghalaya
+25.5,92.0,Meghalaya
+25.5,92.5,Meghalaya
+25.5,93.0,Assam
+25.5,93.5,Nagaland
+25.5,94.0,Manipur
+25.5,94.5,Manipur
+26.0,70.5,Rajasthan
+26.0,71.0,Rajasthan
+26.0,71.5,Rajasthan
+26.0,72.0,Rajasthan
+26.0,72.5,Rajasthan
+26.0,73.0,Rajasthan
+26.0,73.5,Rajasthan
+26.0,74.0,Rajasthan
+26.0,74.5,Rajasthan
+26.0,75.0,Rajasthan
+26.0,75.5,Rajasthan
+26.0,76.0,Rajasthan
+26.0,76.5,Rajasthan
+26.0,77.0,Madhya Pradesh
+26.0,77.5,Madhya Pradesh
+26.0,78.0,Madhya Pradesh
+26.0,78.5,Madhya Pradesh
+26.0,79.0,Uttar Pradesh
+26.0,79.5,Uttar Pradesh
+26.0,80.0,Uttar Pradesh
+26.0,80.5,Uttar Pradesh
+26.0,81.0,Uttar Pradesh
+26.0,81.5,Uttar Pradesh
+26.0,82.0,Uttar Pradesh
+26.0,82.5,Uttar Pradesh
+26.0,83.0,Uttar Pradesh
+26.0,83.5,Uttar Pradesh
+26.0,84.0,Uttar Pradesh
+26.0,84.5,Bihar
+26.0,85.0,Bihar
+26.0,85.5,Bihar
+26.0,86.0,Bihar
+26.0,86.5,Bihar
+26.0,87.0,Bihar
+26.0,87.5,Bihar
+26.0,88.0,West Bengal
+26.0,90.0,Assam
+26.0,90.5,Meghalaya
+26.0,91.0,Assam
+26.0,91.5,Assam
+26.0,92.0,Meghalaya
+26.0,92.5,Assam
+26.0,93.0,Assam
+26.0,93.5,Assam
+26.0,94.0,Nagaland
+26.0,94.5,Nagaland
+26.0,95.0,Nagaland
+26.5,70.5,Rajasthan
+26.5,71.0,Rajasthan
+26.5,71.5,Rajasthan
+26.5,72.0,Rajasthan
+26.5,72.5,Rajasthan
+26.5,73.0,Rajasthan
+26.5,73.5,Rajasthan
+26.5,74.0,Rajasthan
+26.5,74.5,Rajasthan
+26.5,75.0,Rajasthan
+26.5,75.5,Rajasthan
+26.5,76.0,Rajasthan
+26.5,76.5,Rajasthan
+26.5,77.0,Rajasthan
+26.5,77.5,Rajasthan
+26.5,78.0,Madhya Pradesh
+26.5,78.5,Madhya Pradesh
+26.5,79.0,Madhya Pradesh
+26.5,79.5,Uttar Pradesh
+26.5,80.0,Uttar Pradesh
+26.5,80.5,Uttar Pradesh
+26.5,81.0,Uttar Pradesh
+26.5,81.5,Uttar Pradesh
+26.5,82.0,Uttar Pradesh
+26.5,82.5,Uttar Pradesh
+26.5,83.0,Uttar Pradesh
+26.5,83.5,Uttar Pradesh
+26.5,84.0,Bihar
+26.5,84.5,Bihar
+26.5,85.0,Bihar
+26.5,85.5,Bihar
+26.5,86.0,Bihar
+26.5,86.5,Bihar
+26.5,87.0,Bihar
+26.5,89.0,West Bengal
+26.5,89.5,West Bengal
+26.5,90.0,Assam
+26.5,90.5,Assam
+26.5,91.0,Assam
+26.5,91.5,Assam
+26.5,92.0,Assam
+26.5,92.5,Assam
+26.5,93.0,Assam
+26.5,93.5,Assam
+26.5,94.0,Assam
+26.5,94.5,Nagaland
+26.5,95.0,Nagaland
+27.0,70.0,Rajasthan
+27.0,70.5,Rajasthan
+27.0,71.0,Rajasthan
+27.0,71.5,Rajasthan
+27.0,72.0,Rajasthan
+27.0,72.5,Rajasthan
+27.0,73.0,Rajasthan
+27.0,73.5,Rajasthan
+27.0,74.0,Rajasthan
+27.0,74.5,Rajasthan
+27.0,75.0,Rajasthan
+27.0,75.5,Rajasthan
+27.0,76.0,Rajasthan
+27.0,76.5,Rajasthan
+27.0,77.0,Rajasthan
+27.0,77.5,Rajasthan
+27.0,78.0,Uttar Pradesh
+27.0,78.5,Uttar Pradesh
+27.0,79.0,Uttar Pradesh
+27.0,79.5,Uttar Pradesh
+27.0,80.0,Uttar Pradesh
+27.0,80.5,Uttar Pradesh
+27.0,81.0,Uttar Pradesh
+27.0,81.5,Uttar Pradesh
+27.0,82.0,Uttar Pradesh
+27.0,82.5,Uttar Pradesh
+27.0,83.0,Uttar Pradesh
+27.0,83.5,Uttar Pradesh
+27.0,84.0,Uttar Pradesh
+27.0,84.5,Bihar
+27.0,88.5,West Bengal
+27.0,92.5,Arunachal Pradesh
+27.0,93.0,Arunachal Pradesh
+27.0,93.5,Arunachal Pradesh
+27.0,94.0,Assam
+27.0,94.5,Assam
+27.0,95.0,Assam
+27.0,95.5,Arunachal Pradesh
+27.5,70.0,Rajasthan
+27.5,70.5,Rajasthan
+27.5,71.0,Rajasthan
+27.5,71.5,Rajasthan
+27.5,72.0,Rajasthan
+27.5,72.5,Rajasthan
+27.5,73.0,Rajasthan
+27.5,73.5,Rajasthan
+27.5,74.0,Rajasthan
+27.5,74.5,Rajasthan
+27.5,75.0,Rajasthan
+27.5,75.5,Rajasthan
+27.5,76.0,Rajasthan
+27.5,76.5,Rajasthan
+27.5,77.0,Rajasthan
+27.5,77.5,Uttar Pradesh
+27.5,78.0,Uttar Pradesh
+27.5,78.5,Uttar Pradesh
+27.5,79.0,Uttar Pradesh
+27.5,79.5,Uttar Pradesh
+27.5,80.0,Uttar Pradesh
+27.5,80.5,Uttar Pradesh
+27.5,81.0,Uttar Pradesh
+27.5,81.5,Uttar Pradesh
+27.5,82.0,Uttar Pradesh
+27.5,82.5,Uttar Pradesh
+27.5,88.5,Sikkim
+27.5,92.0,Arunachal Pradesh
+27.5,92.5,Arunachal Pradesh
+27.5,93.0,Arunachal Pradesh
+27.5,93.5,Arunachal Pradesh
+27.5,94.0,Arunachal Pradesh
+27.5,94.5,Assam
+27.5,95.0,Assam
+27.5,95.5,Assam
+27.5,96.0,Arunachal Pradesh
+27.5,96.5,Arunachal Pradesh
+28.0,70.5,Rajasthan
+28.0,72.0,Rajasthan
+28.0,72.5,Rajasthan
+28.0,73.0,Rajasthan
+28.0,73.5,Rajasthan
+28.0,74.0,Rajasthan
+28.0,74.5,Rajasthan
+28.0,75.0,Rajasthan
+28.0,75.5,Rajasthan
+28.0,76.0,Haryana
+28.0,76.5,Rajasthan
+28.0,77.0,Haryana
+28.0,77.5,Haryana
+28.0,78.0,Uttar Pradesh
+28.0,78.5,Uttar Pradesh
+28.0,79.0,Uttar Pradesh
+28.0,79.5,Uttar Pradesh
+28.0,80.0,Uttar Pradesh
+28.0,80.5,Uttar Pradesh
+28.0,81.0,Uttar Pradesh
+28.0,81.5,Uttar Pradesh
+28.0,88.5,Sikkim
+28.0,93.0,Arunachal Pradesh
+28.0,93.5,Arunachal Pradesh
+28.0,94.0,Arunachal Pradesh
+28.0,94.5,Arunachal Pradesh
+28.0,95.0,Arunachal Pradesh
+28.0,95.5,Arunachal Pradesh
+28.0,96.0,Arunachal Pradesh
+28.0,96.5,Arunachal Pradesh
+28.0,97.0,Arunachal Pradesh
+28.5,72.5,Rajasthan
+28.5,73.0,Rajasthan
+28.5,73.5,Rajasthan
+28.5,74.0,Rajasthan
+28.5,74.5,Rajasthan
+28.5,75.0,Rajasthan
+28.5,75.5,Rajasthan
+28.5,76.0,Haryana
+28.5,76.5,Haryana
+28.5,77.0,Haryana
+28.5,77.5,Uttar Pradesh
+28.5,78.0,Uttar Pradesh
+28.5,78.5,Uttar Pradesh
+28.5,79.0,Uttar Pradesh
+28.5,79.5,Uttar Pradesh
+28.5,80.0,Uttar Pradesh
+28.5,80.5,Uttar Pradesh
+28.5,93.5,Arunachal Pradesh
+28.5,94.0,Arunachal Pradesh
+28.5,94.5,Arunachal Pradesh
+28.5,95.0,Arunachal Pradesh
+28.5,95.5,Arunachal Pradesh
+28.5,96.0,Arunachal Pradesh
+29.0,73.0,Rajasthan
+29.0,73.5,Rajasthan
+29.0,74.0,Rajasthan
+29.0,74.5,Rajasthan
+29.0,75.0,Rajasthan
+29.0,75.5,Rajasthan
+29.0,76.0,Haryana
+29.0,76.5,Haryana
+29.0,77.0,Haryana
+29.0,77.5,Uttar Pradesh
+29.0,78.0,Uttar Pradesh
+29.0,78.5,Uttar Pradesh
+29.0,79.0,Uttar Pradesh
+29.0,79.5,Uttaranchal
+29.0,80.0,Uttaranchal
+29.0,94.5,Arunachal Pradesh
+29.0,95.0,Arunachal Pradesh
+29.0,95.5,Arunachal Pradesh
+29.0,96.0,Arunachal Pradesh
+29.5,73.5,Rajasthan
+29.5,74.0,Rajasthan
+29.5,74.5,Rajasthan
+29.5,75.0,Haryana
+29.5,75.5,Haryana
+29.5,76.0,Haryana
+29.5,76.5,Haryana
+29.5,77.0,Haryana
+29.5,77.5,Uttar Pradesh
+29.5,78.0,Uttar Pradesh
+29.5,78.5,Uttar Pradesh
+29.5,79.0,Uttaranchal
+29.5,79.5,Uttaranchal
+29.5,80.0,Uttaranchal
+30.0,74.0,Punjab
+30.0,74.5,Punjab
+30.0,75.0,Punjab
+30.0,75.5,Punjab
+30.0,76.0,Punjab
+30.0,76.5,Haryana
+30.0,77.0,Haryana
+30.0,77.5,Uttar Pradesh
+30.0,78.0,Uttaranchal
+30.0,78.5,Uttaranchal
+30.0,79.0,Uttaranchal
+30.0,79.5,Uttaranchal
+30.0,80.0,Uttaranchal
+30.0,80.5,Uttaranchal
+30.5,74.0,Punjab
+30.5,74.5,Punjab
+30.5,75.0,Punjab
+30.5,75.5,Punjab
+30.5,76.0,Punjab
+30.5,76.5,Punjab
+30.5,77.0,Haryana
+30.5,77.5,Himachal Pradesh
+30.5,78.0,Uttaranchal
+30.5,78.5,Uttaranchal
+30.5,79.0,Uttaranchal
+30.5,79.5,Uttaranchal
+30.5,80.0,Uttaranchal
+31.0,75.0,Punjab
+31.0,75.5,Punjab
+31.0,76.0,Punjab
+31.0,76.5,Punjab
+31.0,77.0,Himachal Pradesh
+31.0,77.5,Himachal Pradesh
+31.0,78.0,Uttaranchal
+31.0,78.5,Uttaranchal
+31.0,79.0,Uttaranchal
+31.0,79.5,Uttaranchal
+31.5,75.0,Punjab
+31.5,75.5,Punjab
+31.5,76.0,Punjab
+31.5,76.5,Himachal Pradesh
+31.5,77.0,Himachal Pradesh
+31.5,77.5,Himachal Pradesh
+31.5,78.0,Himachal Pradesh
+31.5,78.5,Himachal Pradesh
+32.0,75.0,Punjab
+32.0,75.5,Punjab
+32.0,76.0,Himachal Pradesh
+32.0,76.5,Himachal Pradesh
+32.0,77.0,Himachal Pradesh
+32.0,77.5,Himachal Pradesh
+32.0,78.0,Himachal Pradesh
+32.0,78.5,Himachal Pradesh
+32.5,75.0,Jammu and Kashmir
+32.5,75.5,Jammu and Kashmir
+32.5,76.0,Himachal Pradesh
+32.5,76.5,Himachal Pradesh
+32.5,77.0,Himachal Pradesh
+32.5,77.5,Himachal Pradesh
+32.5,78.0,Himachal Pradesh
+32.5,79.0,Jammu and Kashmir
+33.0,74.5,Jammu and Kashmir
+33.0,75.0,Jammu and Kashmir
+33.0,75.5,Jammu and Kashmir
+33.0,76.0,Jammu and Kashmir
+33.0,76.5,Himachal Pradesh
+33.0,77.0,Jammu and Kashmir
+33.0,77.5,Jammu and Kashmir
+33.0,78.0,Jammu and Kashmir
+33.0,78.5,Jammu and Kashmir
+33.0,79.0,Jammu and Kashmir
+33.5,74.5,Jammu and Kashmir
+33.5,75.0,Jammu and Kashmir
+33.5,75.5,Jammu and Kashmir
+33.5,76.0,Jammu and Kashmir
+33.5,76.5,Jammu and Kashmir
+33.5,77.0,Jammu and Kashmir
+33.5,77.5,Jammu and Kashmir
+33.5,78.0,Jammu and Kashmir
+33.5,78.5,Jammu and Kashmir
+34.0,74.5,Jammu and Kashmir
+34.0,75.0,Jammu and Kashmir
+34.0,75.5,Jammu and Kashmir
+34.0,76.0,Jammu and Kashmir
+34.0,76.5,Jammu and Kashmir
+34.0,77.0,Jammu and Kashmir
+34.0,77.5,Jammu and Kashmir
+34.0,78.0,Jammu and Kashmir
+34.0,78.5,Jammu and Kashmir
+34.5,74.0,Jammu and Kashmir
+34.5,74.5,Jammu and Kashmir
+34.5,75.0,Jammu and Kashmir
+34.5,75.5,Jammu and Kashmir
+34.5,76.0,Jammu and Kashmir
+34.5,76.5,Jammu and Kashmir
+34.5,77.0,Jammu and Kashmir
+34.5,77.5,Jammu and Kashmir
+34.5,78.0,Jammu and Kashmir
+34.5,78.5,Jammu and Kashmir
+35.0,77.5,Jammu and Kashmir
+35.0,78.0,Jammu and Kashmir
