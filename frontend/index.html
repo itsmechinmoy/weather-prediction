@@ -207,14 +207,17 @@ let indiaCompositeGeojson = null;
 let indiaStatesGeojson = null;
 let activeForecastData = null;
 
-// --- Load Boundaries Independently (Light Mask & Official Border) -------
+// --- Load Boundaries Independently (Bulletproof JSON Validation) -------
 async function loadBoundaries() {
-  // 1. Load national composite boundary for mask & outline
+  // 1. Fetch composite national boundary for light mask & outline
   try {
-    const resComp = await fetch("./india_geojson.json");
-    if (resComp.ok) indiaCompositeGeojson = await resComp.json();
+    const res = await fetch("./india_geojson.json");
+    const text = await res.text();
+    if (text.trim().startsWith('{')) {
+      indiaCompositeGeojson = JSON.parse(text);
+    }
   } catch (e) {
-    console.warn("Local india_geojson.json fetch error:", e);
+    console.warn("Local india_geojson.json parse error:", e);
   }
 
   if (!indiaCompositeGeojson) {
@@ -223,7 +226,7 @@ async function loadBoundaries() {
       const res = await fetch(fallbackUrl);
       if (res.ok) indiaCompositeGeojson = await res.json();
     } catch (e) {
-      console.error("Fallback boundary load error:", e);
+      console.error("Fallback boundary download error:", e);
     }
   }
 
@@ -242,18 +245,31 @@ async function loadBoundaries() {
         interactive: false,
       }).addTo(map);
 
-      console.log("Light mask and official boundary outline rendered successfully");
+      console.log("Light mask & official boundary rendered successfully!");
     } catch (err) {
       console.error("Error creating turf mask:", err);
     }
   }
 
-  // 2. Load state boundary polygons independently for State Averages mode
+  // 2. Fetch state boundary polygons independently for State Averages mode
   try {
-    const resStates = await fetch("./india_states.geojson");
-    if (resStates.ok) indiaStatesGeojson = await resStates.json();
+    const resS = await fetch("./india_states.geojson");
+    const textS = await resS.text();
+    if (textS.trim().startsWith('{')) {
+      indiaStatesGeojson = JSON.parse(textS);
+    }
   } catch (e) {
     console.warn("Could not load india_states.geojson:", e);
+  }
+
+  if (!indiaStatesGeojson) {
+    try {
+      const sFallback = "https://raw.githubusercontent.com/geohacker/india/master/state/india_state.geojson";
+      const resS = await fetch(sFallback);
+      if (resS.ok) indiaStatesGeojson = await resS.json();
+    } catch (e) {
+      console.error("Fallback state boundary load error:", e);
+    }
   }
 }
 loadBoundaries();
@@ -301,7 +317,10 @@ async function loadStateAverages() {
   try {
     if (!indiaStatesGeojson) {
       const sRes = await fetch("./india_states.geojson");
-      if (sRes.ok) indiaStatesGeojson = await sRes.json();
+      const textS = await sRes.text();
+      if (textS.trim().startsWith('{')) {
+        indiaStatesGeojson = JSON.parse(textS);
+      }
     }
 
     const res = await fetch(`${API_BASE}/predict/state-avg`);
