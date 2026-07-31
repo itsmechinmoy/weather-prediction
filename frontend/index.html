@@ -9,6 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/turf/6.5.0/turf.min.js"></script>
 
 <style>
   html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; }
@@ -65,9 +66,23 @@
 </div>
 
 <script>
-const API_BASE = "https://india-weather-api-ev9o.onrender.com"; // change to your deployed FastAPI URL
+// IMPORTANT: after deploying the backend to Render, replace this with your
+// Render URL, e.g. "https://india-weather-api.onrender.com"
+// Keeping it as a plain const (not an env var) since this is a static HTML
+// file with no build step — Vercel just serves it as-is.
+const API_BASE = "https://india-weather-api-ev9o.onrender.com";
 
-const map = L.map('map').setView([22.5, 79.0], 5); // centered on India
+// Same India boundary source used server-side in app/grid.py, so the map
+// and the state-assignment logic agree on what counts as "India" (J&K included).
+const INDIA_GEOJSON_URL = "https://raw.githubusercontent.com/geohacker/india/master/state/india_state.geojson";
+
+const INDIA_BOUNDS = L.latLngBounds([6.0, 68.0], [37.5, 97.5]);
+
+const map = L.map('map', {
+  maxBounds: INDIA_BOUNDS.pad(0.15),  // small pad so it doesn't feel clipped right at the edge
+  maxBoundsViscosity: 0.8,
+  minZoom: 4,
+}).fitBounds(INDIA_BOUNDS);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
@@ -77,6 +92,30 @@ let heatLayer = null;
 let stateLayer = null;
 let marker = null;
 
+// --- Mask everything outside India + draw the correct outline -----------
+async function loadIndiaMask() {
+  const res = await fetch(INDIA_GEOJSON_URL);
+  const indiaGeojson = await res.json();
+
+  // turf.mask() returns a world-covering polygon with India cut out as a
+  // hole — rendering that as a semi-opaque fill grays out everything
+  // that isn't India, without touching India itself.
+  const masked = turf.mask(indiaGeojson);
+  L.geoJSON(masked, {
+    style: { color: 'none', fillColor: '#e5e7eb', fillOpacity: 0.85 },
+    interactive: false,
+  }).addTo(map);
+
+  // Draw India's actual outline on top (this is the real fix for the
+  // missing-J&K issue — we're no longer relying on the base tile layer's
+  // border rendering at all, just this GeoJSON's boundary).
+  L.geoJSON(indiaGeojson, {
+    style: { color: '#1d4ed8', weight: 1.5, fillOpacity: 0 },
+    interactive: false,
+  }).addTo(map);
+}
+loadIndiaMask();
+
 // --- Grid heatmap view ------------------------------------------------
 async function loadGridHeatmap() {
   if (stateLayer) { map.removeLayer(stateLayer); stateLayer = null; }
@@ -85,9 +124,6 @@ async function loadGridHeatmap() {
   const res = await fetch(`${API_BASE}/predict/grid`);
   const data = await res.json();
 
-  // NOTE: `temp` is currently a placeholder (null) in the backend skeleton —
-  // once app/main.py's predict_grid() runs real inference, this will render
-  // an actual heatmap. For now this wires up the full rendering path.
   const points = data.points
     .filter(p => p.temp !== null)
     .map(p => [p.lat, p.lon, p.temp]);
