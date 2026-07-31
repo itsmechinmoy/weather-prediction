@@ -53,7 +53,7 @@
   
   #detail { margin-top: 16px; border-top: 1px solid #334155; padding-top: 16px; }
   .location-header { margin-bottom: 12px; }
-  .location-header h2 { font-size: 20px; margin: 0 0 4px 0; color: #f8fafc; font-weight: 700; }
+  .location-header h2 { font-size: 18px; margin: 0 0 4px 0; color: #f8fafc; font-weight: 700; line-height: 1.3; }
   .location-header .coords { font-size: 12px; color: #38bdf8; background: #0c4a6e; padding: 3px 8px; border-radius: 12px; display: inline-block; }
   
   .weather-badge {
@@ -87,6 +87,12 @@
     background: linear-gradient(to right, #2166ac, #67a9cf, #fddbc7, #ef8a62, #b2182b);
     border-radius: 4px; margin: 6px 0 4px 0;
   }
+  .state-badge-label {
+    background: rgba(15, 23, 42, 0.85); color: #f8fafc; border: 1px solid #38bdf8;
+    padding: 3px 6px; border-radius: 6px; font-size: 11px; font-weight: 700;
+    white-space: nowrap; pointer-events: none; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
 </style>
 </head>
 <body>
@@ -94,7 +100,7 @@
 <div id="map"></div>
 
 <div class="search-container">
-  <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search city in India (e.g. Leh, Nagpur, Jaipur)..." autocomplete="off" />
+  <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search city/village (e.g. Silonijan, Leh, Nagpur)..." autocomplete="off" />
   <div id="searchDropdown" class="search-dropdown"></div>
 </div>
 
@@ -106,7 +112,7 @@
 
 <div id="sidebar">
   <h1><span>🇮🇳</span> India Weather Outlook</h1>
-  <p class="hint">Click any city, state, or grid point for 7-day hourly forecast & 30-day climate trend.</p>
+  <p class="hint">Click any village, city, or state for 7-day hourly forecast & 30-day climate trend.</p>
 
   <div class="controls">
     <button id="viewGrid" class="active">Grid Heatmap</button>
@@ -114,7 +120,7 @@
   </div>
 
   <div id="detail">
-    <p class="hint">Click anywhere inside India or search a city to view predictions.</p>
+    <p class="hint">Click anywhere inside India or search a location to view predictions.</p>
   </div>
 </div>
 
@@ -122,7 +128,7 @@
 const API_BASE = ("https://india-weather-api-ev9o.onrender.com").replace(/\/+$/, "");
 const INDIA_BOUNDS = L.latLngBounds([6.0, 68.0], [37.5, 97.5]);
 
-// 260+ Indian Cities Database for Search (with Official UT/State Designations)
+// 260+ Indian Cities Database for Search
 const CITIES_DB = [
   { name: "New Delhi", state: "Delhi", lat: 28.6139, lon: 77.2090 },
   { name: "Mumbai", state: "Maharashtra", lat: 19.0760, lon: 72.8777 },
@@ -202,22 +208,20 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
 
 let heatLayer = null;
 let stateLayer = null;
+let stateLabelMarkers = [];
 let marker = null;
 let indiaCompositeGeojson = null;
 let indiaStatesGeojson = null;
 let activeForecastData = null;
 
-// --- Load Boundaries Independently (Bulletproof JSON Validation) -------
+// --- Load Boundaries Independently (Light Mask & Official Border) -------
 async function loadBoundaries() {
-  // 1. Fetch composite national boundary for light mask & outline
   try {
     const res = await fetch("./india_geojson.json");
     const text = await res.text();
-    if (text.trim().startsWith('{')) {
-      indiaCompositeGeojson = JSON.parse(text);
-    }
+    if (text.trim().startsWith('{')) indiaCompositeGeojson = JSON.parse(text);
   } catch (e) {
-    console.warn("Local india_geojson.json parse error:", e);
+    console.warn("Local india_geojson.json error:", e);
   }
 
   if (!indiaCompositeGeojson) {
@@ -226,7 +230,7 @@ async function loadBoundaries() {
       const res = await fetch(fallbackUrl);
       if (res.ok) indiaCompositeGeojson = await res.json();
     } catch (e) {
-      console.error("Fallback boundary download error:", e);
+      console.error("Fallback boundary error:", e);
     }
   }
 
@@ -251,25 +255,12 @@ async function loadBoundaries() {
     }
   }
 
-  // 2. Fetch state boundary polygons independently for State Averages mode
   try {
     const resS = await fetch("./india_states.geojson");
     const textS = await resS.text();
-    if (textS.trim().startsWith('{')) {
-      indiaStatesGeojson = JSON.parse(textS);
-    }
+    if (textS.trim().startsWith('{')) indiaStatesGeojson = JSON.parse(textS);
   } catch (e) {
     console.warn("Could not load india_states.geojson:", e);
-  }
-
-  if (!indiaStatesGeojson) {
-    try {
-      const sFallback = "https://raw.githubusercontent.com/geohacker/india/master/state/india_state.geojson";
-      const resS = await fetch(sFallback);
-      if (resS.ok) indiaStatesGeojson = await resS.json();
-    } catch (e) {
-      console.error("Fallback state boundary load error:", e);
-    }
   }
 }
 loadBoundaries();
@@ -281,10 +272,16 @@ function getColor(temp) {
          temp > 20 ? '#67a9cf' : '#2166ac';
 }
 
+function clearStateLabels() {
+  stateLabelMarkers.forEach(m => map.removeLayer(m));
+  stateLabelMarkers = [];
+}
+
 // --- View 1: Grid Heatmap ------------------------------------------------
 async function loadGridHeatmap() {
   document.getElementById('viewGrid').className = 'active';
   document.getElementById('viewState').className = '';
+  clearStateLabels();
 
   if (stateLayer) { map.removeLayer(stateLayer); stateLayer = null; }
   if (heatLayer) { map.removeLayer(heatLayer); }
@@ -299,7 +296,14 @@ async function loadGridHeatmap() {
       .map(p => [p.lat, p.lon, p.temp]);
 
     if (points.length > 0) {
-      heatLayer = L.heatLayer(points, { radius: 18, blur: 22, maxZoom: 7 }).addTo(map);
+      // Set max: 42°C so thermal gradient colors (blue -> red) render with high vibrancy
+      heatLayer = L.heatLayer(points, {
+        radius: 24,
+        blur: 16,
+        max: 42.0,
+        minOpacity: 0.45,
+        gradient: { 0.2: '#2166ac', 0.4: '#67a9cf', 0.6: '#fddbc7', 0.8: '#ef8a62', 1.0: '#b2182b' }
+      }).addTo(map);
     }
   } catch (err) {
     console.error("Failed to load grid heatmap:", err);
@@ -310,6 +314,7 @@ async function loadGridHeatmap() {
 async function loadStateAverages() {
   document.getElementById('viewState').className = 'active';
   document.getElementById('viewGrid').className = '';
+  clearStateLabels();
 
   if (heatLayer) { map.removeLayer(heatLayer); heatLayer = null; }
   if (stateLayer) { map.removeLayer(stateLayer); stateLayer = null; }
@@ -318,9 +323,7 @@ async function loadStateAverages() {
     if (!indiaStatesGeojson) {
       const sRes = await fetch("./india_states.geojson");
       const textS = await sRes.text();
-      if (textS.trim().startsWith('{')) {
-        indiaStatesGeojson = JSON.parse(textS);
-      }
+      if (textS.trim().startsWith('{')) indiaStatesGeojson = JSON.parse(textS);
     }
 
     const res = await fetch(`${API_BASE}/predict/state-avg`);
@@ -340,20 +343,31 @@ async function loadStateAverages() {
             weight: 1.5,
             opacity: 1,
             color: '#334155',
-            fillOpacity: 0.75
+            fillOpacity: 0.78
           };
         },
         onEachFeature: (feature, layer) => {
           const sName = feature.properties.name;
           const avgT = stateAvgMap[sName] || 25.0;
+          
+          // Tooltip on hover
           layer.bindTooltip(`<strong>${sName}</strong><br/>Avg Temp: ${avgT}°C`, { sticky: true });
           
+          // Add state average temp badge in center of state
+          const bounds = layer.getBounds();
+          const center = bounds.getCenter();
+          const badgeIcon = L.divIcon({
+            className: 'state-badge-label',
+            html: `${sName}: ${avgT}°C`,
+            iconSize: null
+          });
+          const m = L.marker([center.lat, center.lng], { icon: badgeIcon, interactive: false }).addTo(map);
+          stateLabelMarkers.push(m);
+
           layer.on({
             mouseover: (e) => { e.target.setStyle({ weight: 3, color: '#38bdf8', fillOpacity: 0.9 }); },
             mouseout: (e) => { stateLayer.resetStyle(e.target); },
             click: (e) => {
-              const bounds = layer.getBounds();
-              const center = bounds.getCenter();
               fetchAndRenderForecast(center.lat, center.lng);
             }
           });
@@ -432,10 +446,36 @@ async function fetchAndRenderForecast(lat, lng) {
   const detail = document.getElementById('detail');
   detail.innerHTML = `<p class="hint">Loading weather predictions for (${lat.toFixed(2)}, ${lng.toFixed(2)})...</p>`;
 
+  // Live reverse geocoding for exact village/district/town/city name
+  let accuratePlaceName = null;
+  try {
+    const geoUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
+    const geoRes = await fetch(geoUrl);
+    if (geoRes.ok) {
+      const geoData = await geoRes.json();
+      const locality = geoData.locality || geoData.city || geoData.localityInfo?.informal?.[0]?.name;
+      const district = geoData.localityInfo?.administrative?.find(a => a.order === 4 || a.order === 3)?.name;
+      const state = geoData.principalSubdivision;
+      if (locality && state) {
+        accuratePlaceName = `${locality}, ${district ? district + ', ' : ''}${state}`;
+      } else if (district && state) {
+        accuratePlaceName = `${district}, ${state}`;
+      } else if (state) {
+        accuratePlaceName = `${state}`;
+      }
+    }
+  } catch (e) {
+    console.warn("Reverse geocode warning:", e);
+  }
+
   try {
     const res = await fetch(`${API_BASE}/predict/point?lat=${lat}&lon=${lng}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
+
+    if (accuratePlaceName) {
+      data.place_name = accuratePlaceName;
+    }
     activeForecastData = data;
 
     renderDetailView('30day');
@@ -457,7 +497,6 @@ function renderDetailView(tab = '30day') {
   const maxTemp = Math.max(...temps);
   const minTemp = Math.min(...temps);
 
-  // Weather Condition & Alerts
   let condition = "☀️ Clear & Sunny";
   if (currentTemp > 35) condition = "🔥 Hot / Severe Heat";
   else if (currentTemp < 18) condition = "❄️ Cool & Breeze";
