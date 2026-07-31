@@ -84,11 +84,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let heatLayer = null;
 let stateLayer = null;
 let marker = null;
+let indiaGeojson = null;
 
-// --- Mask everything outside India + draw the official outline -----------
+// --- Mask everything outside India + draw official boundary -----------
 async function loadIndiaMask() {
   try {
-    let indiaGeojson = null;
     try {
       const res = await fetch("./india_geojson.json");
       if (res.ok) indiaGeojson = await res.json();
@@ -97,30 +97,30 @@ async function loadIndiaMask() {
     }
 
     if (!indiaGeojson) {
-      const fallbackUrl = "https://raw.githubusercontent.com/geohacker/india/master/state/india_state.geojson";
+      const fallbackUrl = "https://raw.githubusercontent.com/datameet/maps/master/Country/india-composite.geojson";
       const res = await fetch(fallbackUrl);
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       indiaGeojson = await res.json();
     }
 
-    console.log("India boundary loaded:", indiaGeojson.features?.length, "feature(s)");
+    console.log("India official boundary loaded successfully:", indiaGeojson.features?.length, "feature(s)");
 
     // turf.mask() returns a world-covering polygon with India cut out as a
     // hole — rendering that as a semi-opaque fill grays out everything
     // that isn't India, without touching India itself.
     const masked = turf.mask(indiaGeojson);
     L.geoJSON(masked, {
-      style: { color: 'none', fillColor: '#374151', fillOpacity: 0.82 },
+      style: { color: 'none', fillColor: '#1f2937', fillOpacity: 0.82 },
       interactive: false,
     }).addTo(map);
 
-    // Draw India's official state/national boundaries on top.
+    // Draw India's official national boundary on top.
     L.geoJSON(indiaGeojson, {
-      style: { color: '#1d4ed8', weight: 1.2, fillOpacity: 0 },
+      style: { color: '#2563eb', weight: 1.8, fillOpacity: 0 },
       interactive: false,
     }).addTo(map);
 
-    console.log("India mask + outline rendered successfully");
+    console.log("India official boundary mask + outline rendered successfully");
   } catch (err) {
     console.error("Failed to load/render India mask:", err);
   }
@@ -170,6 +170,19 @@ document.getElementById('viewState').onclick = loadStateAverages;
 // --- Click-to-drill-down ------------------------------------------------
 map.on('click', async (e) => {
   const { lat, lng } = e.latlng;
+
+  // Verify click is inside official India territory
+  if (indiaGeojson && typeof turf !== 'undefined') {
+    const pt = turf.point([lng, lat]);
+    const isInside = indiaGeojson.features.some(f => turf.booleanPointInPolygon(pt, f));
+    if (!isInside) {
+      if (marker) { map.removeLayer(marker); marker = null; }
+      document.getElementById('detail').innerHTML = `
+        <p class="hint" style="color: #f59e0b;">Outside India's boundary — please click a location inside India or its islands.</p>
+      `;
+      return;
+    }
+  }
 
   if (marker) map.removeLayer(marker);
   marker = L.marker([lat, lng]).addTo(map);
