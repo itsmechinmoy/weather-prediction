@@ -1,7 +1,3 @@
 {
-  "buildCommand": "",
-  "outputDirectory": "frontend",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "outputDirectory": "frontend"
 }
