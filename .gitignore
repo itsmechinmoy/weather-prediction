@@ -1,0 +1,13 @@
+# Large cached download — grid.py re-fetches this automatically, no need to commit it
+backend/data/india_state.geojson
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# NOTE: backend/data/india_grid.csv, backend/data/*.parquet, and
+# backend/models/*.pkl are intentionally NOT ignored — Render's free tier
+# needs them already committed since it builds from this repo, not from
+# running the local pipeline. See README.md.
