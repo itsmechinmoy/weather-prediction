@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>India Weather Prediction Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chart.js/4.4.4/chart.umd.min.js"></script>
+
+<style>
+  html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; }
+  #map { position: absolute; top: 0; bottom: 0; left: 0; right: 340px; }
+  #sidebar {
+    position: absolute; top: 0; right: 0; width: 340px; height: 100%;
+    background: #111827; color: #e5e7eb; padding: 16px; box-sizing: border-box;
+    overflow-y: auto;
+  }
+  #sidebar h1 { font-size: 18px; margin-bottom: 4px; }
+  #sidebar p.hint { font-size: 12px; color: #9ca3af; margin-top: 0; }
+  .controls { margin: 12px 0; display: flex; gap: 8px; }
+  button {
+    background: #2563eb; color: white; border: none; padding: 6px 10px;
+    border-radius: 6px; cursor: pointer; font-size: 12px;
+  }
+  button.secondary { background: #374151; }
+  #detail { margin-top: 16px; border-top: 1px solid #374151; padding-top: 12px; }
+  #detail h2 { font-size: 14px; margin-bottom: 8px; }
+  canvas { max-width: 100%; }
+  .legend {
+    position: absolute; bottom: 20px; left: 20px; background: white;
+    padding: 8px 12px; border-radius: 6px; font-size: 12px; z-index: 1000;
+  }
+  .legend .bar {
+    width: 200px; height: 10px;
+    background: linear-gradient(to right, #2166ac, #67a9cf, #fddbc7, #ef8a62, #b2182b);
+    border-radius: 4px; margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="legend">
+  <div>Temperature (°C)</div>
+  <div class="bar"></div>
+  <div style="display:flex; justify-content:space-between;"><span>Cold</span><span>Hot</span></div>
+</div>
+
+<div id="sidebar">
+  <h1>India Weather Outlook</h1>
+  <p class="hint">Click anywhere on the map for a 7-day hourly forecast + 30-day trend.</p>
+
+  <div class="controls">
+    <button id="viewGrid">Grid Heatmap</button>
+    <button id="viewState" class="secondary">State Averages</button>
+  </div>
+
+  <div id="detail">
+    <p class="hint">Nothing selected yet — click a point on the map.</p>
+  </div>
+</div>
+
+<script>
+const API_BASE = "http://localhost:8000"; // change to your deployed FastAPI URL
+
+const map = L.map('map').setView([22.5, 79.0], 5); // centered on India
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+let heatLayer = null;
+let stateLayer = null;
+let marker = null;
+
+// --- Grid heatmap view ------------------------------------------------
+async function loadGridHeatmap() {
+  if (stateLayer) { map.removeLayer(stateLayer); stateLayer = null; }
+  if (heatLayer) { map.removeLayer(heatLayer); }
+
+  const res = await fetch(`${API_BASE}/predict/grid`);
+  const data = await res.json();
+
+  // NOTE: `temp` is currently a placeholder (null) in the backend skeleton —
+  // once app/main.py's predict_grid() runs real inference, this will render
+  // an actual heatmap. For now this wires up the full rendering path.
+  const points = data.points
+    .filter(p => p.temp !== null)
+    .map(p => [p.lat, p.lon, p.temp]);
+
+  heatLayer = L.heatLayer(points, { radius: 18, blur: 22, maxZoom: 7 }).addTo(map);
+}
+
+// --- State average choropleth view (basic circle-marker version) ------
+async function loadStateAverages() {
+  if (heatLayer) { map.removeLayer(heatLayer); heatLayer = null; }
+
+  const res = await fetch(`${API_BASE}/predict/state-avg`);
+  const data = await res.json();
+  console.log("State averages:", data.states);
+  // Extend this with a proper GeoJSON choropleth (color states by avg_temp)
+  // once /predict/state-avg returns real values — same source geojson used
+  // in grid.py (geohacker/india state boundaries) can be loaded here too.
+}
+
+document.getElementById('viewGrid').onclick = loadGridHeatmap;
+document.getElementById('viewState').onclick = loadStateAverages;
+
+// --- Click-to-drill-down ------------------------------------------------
+map.on('click', async (e) => {
+  const { lat, lng } = e.latlng;
+
+  if (marker) map.removeLayer(marker);
+  marker = L.marker([lat, lng]).addTo(map);
+
+  const detail = document.getElementById('detail');
+  detail.innerHTML = `<p class="hint">Loading forecast for (${lat.toFixed(2)}, ${lng.toFixed(2)})...</p>`;
+
+  try {
+    const res = await fetch(`${API_BASE}/predict/point?lat=${lat}&lon=${lng}`);
+    const data = await res.json();
+
+    detail.innerHTML = `
+      <h2>${data.state ?? 'Unknown state'}</h2>
+      <p class="hint">Nearest grid point: ${data.nearest_grid_point.lat}, ${data.nearest_grid_point.lon}</p>
+      <canvas id="trendChart" height="180"></canvas>
+    `;
+
+    const ctx = document.getElementById('trendChart').getContext('2d');
+    const trend = data.forecast_30day_trend || [];
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: trend.map(d => d.date),
+        datasets: [
+          {
+            label: '30-day outlook (°C)',
+            data: trend.map(d => d.predicted_temp),
+            borderColor: '#f59e0b',
+            tension: 0.3,
+          },
+        ]
+      },
+      options: {
+        plugins: { legend: { labels: { color: '#e5e7eb' } } },
+        scales: {
+          x: { ticks: { color: '#9ca3af', maxTicksLimit: 6 } },
+          y: { ticks: { color: '#9ca3af' } },
+        }
+      }
+    });
+  } catch (err) {
+    detail.innerHTML = `<p class="hint">Could not load forecast. Is the backend running at ${API_BASE}?</p>`;
+    console.error(err);
+  }
+});
+
+// Initial load
+loadGridHeatmap();
+</script>
+
+</body>
+</html>

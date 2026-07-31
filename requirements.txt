@@ -1,0 +1,12 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+requests==2.32.3
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.5.1
+xgboost==2.1.1
+prophet==1.1.5
+shapely==2.0.5
+geopandas==0.14.4
+joblib==1.4.2
+python-dotenv==1.0.1
