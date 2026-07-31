@@ -32,7 +32,7 @@ FEATURE_COLS = [
     "hour_sin", "hour_cos", "doy_sin", "doy_cos", "month",
 ]
 
-# Database of 259 Indian Cities, Districts, and Regional Capitals for exact place lookup
+# Database of 260+ Indian Cities, Districts, and Regional Capitals with Official UT/State Designations
 INDIAN_CITIES_DB = [
     ("New Delhi", "Delhi", 28.6139, 77.2090),
     ("Mumbai", "Maharashtra", 19.0760, 72.8777),
@@ -172,16 +172,22 @@ INDIAN_CITIES_DB = [
     ("Rewa", "Madhya Pradesh", 24.5362, 81.3037),
     ("Mirzapur", "Uttar Pradesh", 25.1460, 82.5694),
     ("Haridwar", "Uttarakhand", 29.9457, 78.1642),
+    # Official UT of Ladakh
     ("Leh", "Ladakh", 34.1526, 77.5771),
     ("Kargil", "Ladakh", 34.5539, 76.1349),
-    ("Gilgit", "Jammu & Kashmir", 35.9208, 74.3144),
+    ("Gilgit", "Ladakh", 35.9208, 74.3144),
+    ("Skardu", "Ladakh", 35.2971, 75.6333),
+    ("Aksai Chin", "Ladakh", 35.2000, 78.8000),
+    # Official UT of Jammu & Kashmir
     ("Muzaffarabad", "Jammu & Kashmir", 34.3700, 73.4700),
     ("Mirpur", "Jammu & Kashmir", 33.1484, 73.7519),
+    ("Srinagar", "Jammu & Kashmir", 34.0837, 74.7973),
+    ("Jammu", "Jammu & Kashmir", 32.7266, 74.8570),
     ("Gangtok", "Sikkim", 27.3389, 88.6065),
     ("Shillong", "Meghalaya", 25.5788, 91.8933),
     ("Kohima", "Nagaland", 25.6751, 94.1086),
     ("Itanagar", "Arunachal Pradesh", 27.0844, 93.6053),
-    ("Port Blair", "Andaman and Nicobar Islands", 11.6233, 92.7265),
+    ("Port Blair", "Andaman & Nicobar Islands", 11.6233, 92.7265),
     ("Kavaratti", "Lakshadweep", 10.5667, 72.6417)
 ]
 
@@ -193,7 +199,6 @@ def find_nearest_place(lat: float, lon: float):
         if dist < best_dist:
             best_dist = dist
             best_city = (name, state)
-    # If nearest city is within ~80km (0.8deg dist squared ≈ 0.64)
     if best_city and best_dist < 0.8:
         return f"{best_city[0]}, {best_city[1]}"
     return None
@@ -318,7 +323,6 @@ def predict_point(lat: float, lon: float):
     n_lat = float(nearest["lat"])
     n_lon = float(nearest["lon"])
 
-    # Lookup exact city/town name if close to a known city
     place_name = find_nearest_place(lat, lon) or f"Near {state}"
 
     response = {
